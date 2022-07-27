@@ -22,16 +22,19 @@
     </el-table>
     <!-- 上传 支付二维码 -->
     <div class="code">
-      <el-row :gutter="20">
-        <el-col :span="4">
-          <span>支付二维码：</span>
-          <multi-upload v-model="payPic" :maxCount='1' :maxSize='5'></multi-upload>
-        </el-col>
-        <el-col :span="3">
-          <span>充值二维码：</span>
-          <multi-upload v-model="rechargePic" :maxCount='1' :maxSize='5'></multi-upload>
-        </el-col>
-      </el-row>
+      <el-card shadow="never">
+        <el-button size="small" type="primary" style="margin-bottom:20px;">保存</el-button>
+        <el-row :gutter="20">
+          <el-col :span="4">
+            <span>支付二维码：</span>
+            <multi-upload v-model="payPic" :maxCount='1' :maxSize='5'></multi-upload>
+          </el-col>
+          <el-col :span="3">
+            <span>充值二维码：</span>
+            <multi-upload v-model="rechargePic" :maxCount='1' :maxSize='5'></multi-upload>
+          </el-col>
+        </el-row>
+      </el-card>
     </div>
   </div>
 </template>
