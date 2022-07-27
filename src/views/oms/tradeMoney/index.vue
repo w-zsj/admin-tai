@@ -15,17 +15,43 @@
         </el-col>
       </el-row>
     </div>
-    <el-card class="operate-container" shadow="never">
-      <el-button> 全部订单 </el-button>
-      <el-button> 当前订单 </el-button>
-      <el-button> 当月订单 </el-button>
-    </el-card>
-    <ve-line :data="chartData" :colors="colors" :tooltip="tooltip" :grid='grid' :resizeable="true" :legend-visible="true" :loading="loading" :data-empty="dataEmpty" :settings="chartSettings"></ve-line>
+    <div class="table-container">
+      <el-table ref="wineKnowledgeTable" :data="list" style="width: 100%;" v-loading="listLoading" border>
+        <el-table-column label="标题" align="center">
+          <template slot-scope="scope">{{scope.row.title}}</template>
+        </el-table-column>
+        <el-table-column label="图片" width='280' align="center">
+          <template slot-scope="scope">
+            <el-image style=" height: 80px;" :src="scope.row.pic" :preview-src-list="[scope.row.pic]" />
+          </template>
+        </el-table-column>
+        <el-table-column label="发布时间" align="center">
+          <template slot-scope="scope">{{scope.row.publishedTime | formatTime}}</template>
+        </el-table-column>
+        <el-table-column label="文章类型" align="center">
+          <template slot-scope="scope">{{typeEnum[scope.row.type-1]}}</template>
+        </el-table-column>
+        <el-table-column label="操作" align="center">
+          <template slot-scope="scope">
+            <el-button size="mini" type="text" @click="handleUpdate(scope.$index, scope.row)">查看</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+    <div class="pagination-container">
+      <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" layout="total, sizes,prev, pager, next,jumper" :page-size="listQuery.pageSize" :page-sizes="[5,10,15]" :current-page.sync="listQuery.pageNum" :total="total">
+      </el-pagination>
+    </div>
   </div>
 
 </template>
 <script>
-import echarts from 'echarts';
+const defaultListQuery = {
+  pageNum: 1,
+  pageSize: 10,
+  title: null,
+  publishedTime: null,
+};
 const recordList = [
   {
     svg_icon: 't_user_icon',
@@ -50,79 +76,10 @@ export default {
   data() {
     return {
       recordList,
-      chartSettings: {
-        // xAxisType: 'time',
-        area: true,
-        axisSite: { right: ['salesAmount'] },
-        yAxisName: ['销售瓶数', '销售额'],
-        labelMap: { 'totalNum': '订单数量', 'salesAmount': '销售额', 'salesVolume': "销售瓶数" },
-      },
-      grid: {
-        right: 20,
-        btotom: 0
-      },
-      colors: [
-        new echarts.graphic.LinearGradient(0, 0, 0, 1,
-          [{
-            offset: 0, color: 'rgba(176,214,221,1)'
-          }, {
-            offset: 1, color: 'rgba(176,214,221,0.5)'
-
-          }]),
-        new echarts.graphic.LinearGradient(0, 0, 0, 1,
-          [{
-            offset: 0, color: '#58D9D9'
-          },
-          {
-            offset: 1, color: '#61AEE9'
-          }]),
-        new echarts.graphic.LinearGradient(0, 0, 0, 1,
-          [{
-            offset: 0, color: 'rgba(255,149,54,1)'
-          },
-          {
-            offset: 1, color: 'rgba(255,149,54,0.5)'
-          }])],
-      tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-          type: 'cross'
-        },
-        borderWidth: 1,
-        height: 80,
-        padding: 16,
-        confine: true, // 是否限制在图表内
-
-      },
-      legend: {
-        orient: 'horizontal',      // 布局方式，默认为水平布局，可选为：
-        // 'horizontal' ¦ 'vertical'
-        x: 'center',               // 水平安放位置，默认为全图居中，可选为：
-        // 'center' ¦ 'left' ¦ 'right'
-        // ¦ {number}（x坐标，单位px）
-        y: 'top',                  // 垂直安放位置，默认为全图顶端，可选为：
-        // 'top' ¦ 'bottom' ¦ 'center'
-        // ¦ {number}（y坐标，单位px）
-        backgroundColor: 'rgba(0,0,0,0)',
-        borderColor: '#ccc',       // 图例边框颜色
-        borderWidth: 0,            // 图例边框线宽，单位px，默认为0（无边框）
-        padding: 5,                // 图例内边距，单位px，默认各方向内边距为5，
-        // 接受数组分别设定上右下左边距，同css
-        itemGap: 10,               // 各个item之间的间隔，单位px，默认为10，
-        // 横向布局时为水平间隔，纵向布局时为纵向间隔
-        itemWidth: 20,             // 图例图形宽度
-        itemHeight: 14,            // 图例图形高度
-        textStyle: {
-          color: '#333'          // 图例文字颜色
-        }
-      },
-
-      chartData: {
-        columns: [],
-        rows: []
-      },
-      loading: false,
-      dataEmpty: false,
+      listQuery: Object.assign({}, defaultListQuery),
+      list: null,
+      total: null,
+      listLoading: false,
     }
   },
   mounted() {
@@ -130,30 +87,17 @@ export default {
   },
   methods: {
     getChartList() {
-      this.loading = true
-      this.chartData = {
-        columns: ['statisticsDate', 'totalNum', 'salesAmount', 'salesVolume'],
-        rows: [
-          {
-            statisticsDate: '1月',
-            totalNum: 11,
-            salesAmount: 222,
-            salesVolume: 4444
-          },
-          {
-            statisticsDate: '2月',
-            totalNum: 11,
-            salesAmount: 333333333,
-            salesVolume: 33333
-          },
-          {
-            statisticsDate: '3月',
-            totalNum: 12221,
-            salesAmount: 555,
-            salesVolume: 666666
-          }
-        ]
-      };
+
+
+    },
+    handleSizeChange(val) {
+      this.listQuery.pageNum = 1;
+      this.listQuery.pageSize = val;
+      this.getList();
+    },
+    handleCurrentChange(val) {
+      this.listQuery.pageNum = val;
+      this.getList();
     },
 
   }
