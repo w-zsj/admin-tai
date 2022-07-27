@@ -1,0 +1,117 @@
+.app-container {
+  font-size: 14px;
+  color: #606266;
+
+  /deep/ .el-card__body {
+    padding: 0;
+  }
+
+  .grid-content {
+    height: 100px;
+    border: 1px solid #ccc;
+
+    .t_user_icon {
+      font-size: 32px;
+    }
+
+    .icon {
+      width: 30%;
+      height: 100%;
+      background: #EA8F62;
+    }
+
+    .count {
+      width: 70%;
+      height: 100%;
+      justify-content: center;
+      align-items: center;
+      font-size: 18px;
+      font-weight: bold;
+
+      .txt {
+        font-size: 12px;
+        font-weight: normal;
+        padding-top: 10px;
+      }
+    }
+  }
+
+  .mb {
+    margin-bottom: 20px;
+  }
+
+  .header {
+    color: #606266;
+
+    background: #f2f6fc;
+    font-weight: bold;
+    padding: 15px 20px;
+  }
+
+  .statistics {
+
+
+    font-size: 14px;
+
+    .item {
+      height: 40px;
+      padding: 0 40px;
+      border-bottom: 1px solid #dcdfe6;
+
+      &:last-child {
+        border-bottom: 0;
+      }
+
+      span {
+        &:first-child {
+          margin-right: 20px;
+        }
+
+        &.yell {
+          font-size: 12px;
+          color: #EA8F62;
+        }
+      }
+
+    }
+  }
+
+  .buy-progress {
+    .header {
+      margin-bottom: 20px;
+    }
+
+    .list {
+      padding: 0 20px;
+
+      .item {
+        margin-right: 20px;
+      }
+    }
+
+    .tit {
+      width: 100px;
+      height: 40px;
+    }
+  }
+
+  .enter {
+    margin: 20px;
+
+    .list {
+      width: 100px;
+      padding: 10px 0;
+      // height: 50px;
+      border-radius: 4px;
+      margin-right: 20px;
+      color: #fff;
+      justify-content: center;
+      align-items: center;
+
+      .title {
+        font-size: 12px;
+        padding-top: 10px;
+      }
+    }
+  }
+}

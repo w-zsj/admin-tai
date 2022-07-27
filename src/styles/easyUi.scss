@@ -1,0 +1,28 @@
+
+/deep/ .datagrid-htable,
+/deep/ .datagrid-btable,
+/deep/ .datagrid-ftable,
+/deep/ .datagrid-row-over {
+  color: #606266 !important;
+  font-weight: normal;
+  font-size: 14px;
+}
+/deep/ .datagrid-group-expander {
+  display: none !important;
+}
+/deep/ .panel-body,
+/deep/ .datagrid-header td,
+/deep/ .datagrid-body td,
+/deep/ .datagrid-footer td {
+  border-style: solid !important;
+  border-color: #dcdfe6 !important;
+}
+/deep/ .datagrid-body td {
+  padding: 10px;
+}
+/deep/ .datagrid-header-row {
+  height: 48px !important;
+}
+/deep/ .datagrid-td-group {
+  height: 40px !important;
+}
