@@ -220,6 +220,54 @@ export const asyncRouterMap = [
     ]
   },
   {
+    path: '/rms',
+    component: Layout,
+    redirect: '/rms/pay',
+    name: 'rms',
+    meta: { title: '支付管理', icon: 'total-today' },
+    children: [
+      {
+        path: 'pay',
+        name: 'rmsPay',
+        component: () => import('@/views/rms/pay/index.vue'),
+        meta: { title: '支付列表', icon: 'sms-coupon' },
+      },
+      {
+        path: 'recharge',
+        name: 'rmsRecharge',
+        component: () => import('@/views/rms/recharge/index.vue'),
+        meta: { title: '充值列表', icon: 'sms-coupon-package' },
+      },
+      {
+        path: 'pay/setting',
+        name: 'rmsSetting',
+        component: () => import('@/views/rms/paySetting/index.vue'),
+        meta: { title: '支付设置', icon: 'order-setting' },
+      },
+    ]
+  },
+  {
+    path: '/mms',
+    component: Layout,
+    redirect: '/mms/member',
+    name: 'mms',
+    meta: { title: '会员管理', icon: 'vip-manage' },
+    children: [
+      {
+        path: 'member',
+        name: 'mmsMember',
+        component: () => import('@/views/mms/member/index.vue'),
+        meta: { title: '会员列表', icon: 'order-setting' },
+      },
+      {
+        path: 'record',
+        name: 'mmsRecord',
+        component: () => import('@/views/mms/record/index.vue'),
+        meta: { title: '记录管理', icon: 'vip' },
+      },
+    ]
+  },
+  {
     path: '/ums',
     component: Layout,
     redirect: '/ums/admin',
