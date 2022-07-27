@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <!-- 商城用户数 -->
-    <!-- <div class="mb">
+    <div class="mb">
       <el-row :gutter="20">
         <el-col :span="6" v-for="(item, idx) in recordList" :key="idx">
           <div class="grid-content flex-aic">
@@ -15,9 +15,9 @@
           </div>
         </el-col>
       </el-row>
-    </div> -->
+    </div>
     <!-- 统计信息 -->
-    <!-- <div class="mb statistics">
+    <div class="mb statistics">
       <el-row :gutter="20">
         <el-col :span="6" v-for="(item, idx) in statistics" :key="idx">
           <el-card shadow="never">
@@ -29,9 +29,9 @@
           </el-card>
         </el-col>
       </el-row>
-    </div> -->
+    </div>
     <!-- 购物产品比例 -->
-    <!-- <div class="mb buy-progress">
+    <div class="mb buy-progress">
       <el-card shadow="never">
         <div class="header">购物产品比例</div>
         <div class="list flex-aic">
@@ -57,7 +57,7 @@
         </div>
       </el-card>
 
-    </div> -->
+    </div>
   </div>
 </template>
 

@@ -1,126 +1,67 @@
 <template> 
   <div class="app-container">
-    <el-card class="filter-container" shadow="never">
-      <div>
-        <i class="el-icon-search" />
-        <span>筛选搜索</span>
-        <el-button style="float:right" type="primary" @click="handleSearchList()" size="small"> 查询搜索</el-button>
-        <el-button style="float:right;margin-right: 15px" @click="handleResetSearch()" size="small"> 重置</el-button>
-      </div>
-      <div style="margin-top: 15px">
-        <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
-          <el-form-item label="标题：">
-            <el-input v-model="listQuery.title" class="input-width" placeholder="标题"></el-input>
-          </el-form-item>
-          <el-form-item label="发布时间：">
-            <el-date-picker class="input-width" v-model="listQuery.publishedTime" value-format="yyyy-MM-dd" type="date" placeholder="请选择时间">
-            </el-date-picker>
-          </el-form-item>
-        </el-form>
-      </div>
-    </el-card>
-
-    <div class="table-container">
-      <el-table ref="wineKnowledgeTable" :data="list" style="width: 100%;" v-loading="listLoading" border>
-        <el-table-column label="标题" align="center">
-          <template slot-scope="scope">{{scope.row.title}}</template>
-        </el-table-column>
-        <el-table-column label="图片" width='280' align="center">
-          <template slot-scope="scope">
-            <el-image style=" height: 80px;" :src="scope.row.pic" :preview-src-list="[scope.row.pic]" />
-          </template>
-        </el-table-column>
-        <el-table-column label="发布时间" align="center">
-          <template slot-scope="scope">{{scope.row.publishedTime | formatTime}}</template>
-        </el-table-column>
-        <el-table-column label="文章类型" align="center">
-          <template slot-scope="scope">{{typeEnum[scope.row.type-1]}}</template>
-        </el-table-column>
-        <el-table-column label="操作" align="center">
-          <template slot-scope="scope">
-            <el-button size="mini" type="text" @click="handleUpdate(scope.$index, scope.row)">查看</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-    </div>
-    <div class="pagination-container">
-      <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" layout="total, sizes,prev, pager, next,jumper" :page-size="listQuery.pageSize" :page-sizes="[5,10,15]" :current-page.sync="listQuery.pageNum" :total="total">
-      </el-pagination>
+    <!-- 支付配置 -->
+    <el-table ref="wineKnowledgeTable" :data="list" style="width: 100%;" border>
+      <el-table-column label="支付名称" align="center">
+        <template slot-scope="scope">{{scope.row.title}}</template>
+      </el-table-column>
+      <el-table-column label="状态" align="center">
+        <template slot-scope="scope">
+          <el-switch v-model="scope.row.status" active-text="按月付费" inactive-text="按年付费">
+          </el-switch>
+        </template>
+      </el-table-column>
+      <el-table-column label="描述" align="center">
+        <template slot-scope="scope">44</template>
+      </el-table-column>
+      <el-table-column label="操作" align="center">
+        <template slot-scope="scope">
+          <el-button size="mini" type="text">查看</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <!-- 上传 支付二维码 -->
+    <div class="code">
+      <el-row :gutter="20">
+        <el-col :span="4">
+          <span>支付二维码：</span>
+          <multi-upload v-model="payPic" :maxCount='1' :maxSize='5'></multi-upload>
+        </el-col>
+        <el-col :span="3">
+          <span>充值二维码：</span>
+          <multi-upload v-model="rechargePic" :maxCount='1' :maxSize='5'></multi-upload>
+        </el-col>
+      </el-row>
     </div>
   </div>
 </template>
 <script>
-const defaultListQuery = {
-  pageNum: 1,
-  pageSize: 10,
-  title: null,
-  publishedTime: null,
-};
+import MultiUpload from "@/components/Upload/multiUpload";
 export default {
-  name: "knowledge",
+  components: { MultiUpload },
   data() {
     return {
-      listQuery: Object.assign({}, defaultListQuery),
-      list: null,
-      total: null,
-      listLoading: false,
-      operateType: null,
-      typeEnum: ['h5链接', '图片'],
+      list: [],
+      payPic: [],
+      rechargePic: []
     };
   },
   created() {
-    this.getList();
+
   },
   mounted() { },
-  filters: {
-    formatTime(time) {
-      if (time == null || time === "") {
-        return "N/A";
-      }
-      return formatDate(time, "yyyy-MM-dd hh:mm:ss");
-    },
-  },
-  methods: {
-    handleResetSearch() {
-      this.listQuery = Object.assign({}, defaultListQuery);
-    },
-    handleSearchList() {
-      this.listQuery.pageNum = 1;
-      this.getList();
-    },
-    handleSizeChange(val) {
-      this.listQuery.pageNum = 1;
-      this.listQuery.pageSize = val;
-      this.getList();
-    },
-    handleCurrentChange(val) {
-      this.listQuery.pageNum = val;
-      this.getList();
-    },
-    //   查看
-    handleUpdate(index, row) {
 
-    },
-    getList() {
-      this.listLoading = true;
-      //   fetchList(this.listQuery).then((response) => {
-      //     this.listLoading = false;
-      //     this.list = response.data.list;
-      //     this.total = response.data.total;
-      //   });
-    },
+  methods: {
+
   },
 };
 </script>
 <style lang="scss" scoped>
-.app-container {
-  height: calc(100vh - 120px);
-}
-.input-width {
-  width: 203px;
-}
-/deep/ .el-image img {
-  width: auto;
+.code {
+  font-size: 14px;
+  color: #333;
+  font-weight: bold;
+  margin-top: 50px;
 }
 </style>
 

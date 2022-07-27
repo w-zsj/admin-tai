@@ -5,7 +5,7 @@
         <div style="text-align: center">
           <svg-icon icon-class="login-mall" style="width: 56px;height: 56px;color: #409EFF"></svg-icon>
         </div>
-        <h2 class="login-title color-main">泰嗨购管理后台</h2>
+        <h2 class="login-title color-main">泰嗨乐管理后台</h2>
         <el-form-item prop="username">
           <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="请输入用户名">
             <span slot="prefix">
