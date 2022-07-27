@@ -1,20 +1,14 @@
 <template> 
   <div class="app-container">
     <el-card class="filter-container" shadow="never">
-      <div>
-        <i class="el-icon-search"></i>
-        <span>筛选搜索</span>
-        <el-button style="float:right" type="primary" @click="handleSearchList()" size="small">
-          查询搜索
-        </el-button>
-        <el-button style="float:right;margin-right: 15px" @click="handleResetSearch()" size="small">
-          重置
-        </el-button>
-      </div>
       <div style="margin-top: 15px">
         <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
           <el-form-item label="广告名称：">
             <el-input v-model="listQuery.name" class="input-width" placeholder="请输入关键词"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button style="float:right" type="primary" @click="handleSearchList()" size="small"> 查询搜索</el-button>
+            <el-button style="float:right;margin-right: 15px" @click="handleResetSearch()" size="small"> 重置</el-button>
           </el-form-item>
           <!-- <el-form-item label="可见类型：">
             <el-select v-model="listQuery.type" placeholder="请选择可见类型" clearable class="input-width">
@@ -36,7 +30,8 @@
       <el-button size="mini" class="btn-add" @click="handleAdd()">添加广告</el-button>
     </el-card>
 
-    <el-table ref="homeAdvertiseTable" :data="list" style="width: 100%;" @selection-change="handleSelectionChange" v-loading="listLoading" border>
+    <el-table ref="homeAdvertiseTable" :data="list" style="width: 100%;" @selection-change="handleSelectionChange"
+      v-loading="listLoading" border>
       <el-table-column type="selection" width="60" align="center"></el-table-column>
       <el-table-column label="ID" width="60" align="center">
         <template slot-scope="scope">{{scope.row.id}}</template>
@@ -80,7 +75,9 @@
     </el-table>
 
     <div class="pagination-container">
-      <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" layout="total, sizes,prev, pager, next,jumper" :page-size="listQuery.pageSize" :page-sizes="[5,10,15]" :current-page.sync="listQuery.pageNum" :total="total">
+      <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
+        layout="total, sizes,prev, pager, next,jumper" :page-size="listQuery.pageSize" :page-sizes="[5,10,15]"
+        :current-page.sync="listQuery.pageNum" :total="total">
       </el-pagination>
     </div>
 

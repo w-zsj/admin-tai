@@ -3,22 +3,23 @@
     <!-- 支付配置 -->
     <el-table ref="wineKnowledgeTable" :data="list" style="width: 100%;" border>
       <el-table-column label="支付名称" align="center">
-        <template slot-scope="scope">{{scope.row.title}}</template>
+        <template slot-scope="scope">{{scope.row.paytype}}</template>
       </el-table-column>
       <el-table-column label="状态" align="center">
         <template slot-scope="scope">
-          <el-switch v-model="scope.row.status" active-text="按月付费" inactive-text="按年付费">
+          <el-switch :active-value="1" :inactive-value="0" v-model="scope.row.status" active-text="启用"
+            inactive-text="关闭" @change="changeSwitch(scope.row)">
           </el-switch>
         </template>
       </el-table-column>
       <el-table-column label="描述" align="center">
-        <template slot-scope="scope">44</template>
+        <template slot-scope="scope">{{scope.row.desc}}</template>
       </el-table-column>
-      <el-table-column label="操作" align="center">
+      <!-- <el-table-column label="操作" align="center">
         <template slot-scope="scope">
           <el-button size="mini" type="text">查看</el-button>
         </template>
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
     <!-- 上传 支付二维码 -->
     <div class="code">
@@ -44,7 +45,23 @@ export default {
   components: { MultiUpload },
   data() {
     return {
-      list: [],
+      list: [
+        {
+          paytype: "微信支付",
+          status: 1,
+          desc: 'jhhhhhhhhh'
+        },
+        {
+          paytype: "钱包支付",
+          status: 0,
+          desc: 'jhhhhhhhhh'
+        },
+        {
+          paytype: "人工客服",
+          status: 1,
+          desc: 'jhhhhhhhhh'
+        }
+      ],
       payPic: [],
       rechargePic: []
     };
@@ -55,7 +72,9 @@ export default {
   mounted() { },
 
   methods: {
-
+    changeSwitch(row) {
+      console.log('row', row)
+    }
   },
 };
 </script>

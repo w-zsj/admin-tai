@@ -8,13 +8,7 @@
       </el-button>
     </el-card>
     <div class="table-container">
-      <el-table
-        ref="productCateTable"
-        style="width: 100%"
-        :data="list"
-        v-loading="listLoading"
-        border
-      >
+      <el-table ref="productCateTable" style="width: 100%" :data="list" v-loading="listLoading" border>
         <el-table-column label="编号" width="50" align="center">
           <template slot-scope="scope">{{ scope.row.id }}</template>
         </el-table-column>
@@ -29,12 +23,8 @@
         </el-table-column>
         <el-table-column label="是否显示" width="80" align="center">
           <template slot-scope="scope">
-            <el-switch
-              @change="handleShowStatusChange(scope.$index, scope.row)"
-              :active-value="1"
-              :inactive-value="0"
-              v-model="scope.row.showStatus"
-            >
+            <el-switch @change="handleShowStatusChange(scope.$index, scope.row)" :active-value="1" :inactive-value="0"
+              v-model="scope.row.showStatus">
             </el-switch>
           </template>
         </el-table-column>
@@ -43,46 +33,29 @@
         </el-table-column>
         <el-table-column label="设置" align="center">
           <template slot-scope="scope">
-            <el-button
-              size="mini"
-              :disabled="scope.row.level | disableNextLevel"
-              @click="handleShowNextLevel(scope.$index, scope.row)"
-              >查看下级
+            <el-button size="mini" :disabled="scope.row.level | disableNextLevel"
+              @click="handleShowNextLevel(scope.$index, scope.row)">查看下级
             </el-button>
-            <el-button size="mini" @click="getAttrList(scope.$index, scope.row)"
-              >属性列表
+            <el-button size="mini" @click="getAttrList(scope.$index, scope.row)">属性列表
             </el-button>
-            <el-button size="mini" @click="getParamList(scope.$index, scope.row)"
-              >参数列表
+            <el-button size="mini" @click="getParamList(scope.$index, scope.row)">参数列表
             </el-button>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="160" align="center">
           <template slot-scope="scope">
-            <el-button size="mini" @click="handleUpdate(scope.$index, scope.row)"
-              >编辑
+            <el-button size="mini" @click="handleUpdate(scope.$index, scope.row)">编辑
             </el-button>
-            <el-button
-              size="mini"
-              type="danger"
-              @click="handleDelete(scope.$index, scope.row)"
-              >删除
+            <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除
             </el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
     <div class="pagination-container">
-      <el-pagination
-        background
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        layout="total, sizes,prev, pager, next,jumper"
-        :page-size="listQuery.pageSize"
-        :page-sizes="[5, 10, 15]"
-        :current-page.sync="listQuery.pageNum"
-        :total="total"
-      >
+      <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
+        layout="total, sizes,prev, pager, next,jumper" :page-size="listQuery.pageSize" :page-sizes="[5, 10, 15]"
+        :current-page.sync="listQuery.pageNum" :total="total">
       </el-pagination>
     </div>
   </div>

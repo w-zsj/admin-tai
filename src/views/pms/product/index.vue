@@ -2,65 +2,27 @@
    
   <div class="app-container">
     <el-card class="filter-container" shadow="never">
-      <div>
-        <i class="el-icon-search"></i>
-        <span>筛选搜索</span>
-        <el-button
-          style="float: right"
-          @click="handleSearchList"
-          type="primary"
-          size="small"
-        >
-          查询结果
-        </el-button>
-        <el-button
-          style="float: right; margin-right: 15px"
-          @click="handleResetSearch"
-          size="small"
-        >
-          重置
-        </el-button>
-      </div>
       <div style="margin-top: 15px">
         <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
           <el-form-item label="商品名称：">
-            <el-input
-              class="input-width"
-              v-model="listQuery.keyword"
-              placeholder="商品名称"
-            ></el-input>
+            <el-input class="input-width" v-model="listQuery.keyword" placeholder="商品名称"></el-input>
           </el-form-item>
           <el-form-item label="商品货号：">
-            <el-input
-              class="input-width"
-              v-model="listQuery.productSn"
-              placeholder="商品货号"
-            ></el-input>
+            <el-input class="input-width" v-model="listQuery.productSn" placeholder="商品货号"></el-input>
           </el-form-item>
           <el-form-item label="商品类目：">
-            <el-cascader
-              class="input-width"
-              clearable
-              v-model="selectProductCateValue"
-              :options="productCateOptions"
-            >
+            <el-cascader class="input-width" clearable v-model="selectProductCateValue" :options="productCateOptions">
             </el-cascader>
           </el-form-item>
           <el-form-item label="状态：">
-            <el-select
-              class="input-width"
-              v-model="listQuery.publishStatus"
-              placeholder="全部"
-              clearable
-            >
-              <el-option
-                v-for="item in publishStatusOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              >
+            <el-select class="input-width" v-model="listQuery.publishStatus" placeholder="全部" clearable>
+              <el-option v-for="item in publishStatusOptions" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-button style="float:right" type="primary" @click="handleSearchList()" size="small"> 查询搜索</el-button>
+            <el-button style="float:right;margin-right: 15px" @click="handleResetSearch()" size="small"> 重置</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -76,22 +38,14 @@
       </el-button>
     </el-card>
     <div class="table-container">
-      <el-table
-        ref="productTable"
-        :data="list"
-        style="width: 100%"
-        @selection-change="handleSelectionChange"
-        v-loading="listLoading"
-        border
-      >
+      <el-table ref="productTable" :data="list" style="width: 100%" @selection-change="handleSelectionChange"
+        v-loading="listLoading" border>
         <el-table-column type="selection" width="60" align="center"></el-table-column>
         <el-table-column label="编号" width="60" align="center">
           <template slot-scope="scope">{{ scope.row.id }}</template>
         </el-table-column>
         <el-table-column label="商品图片" align="center">
-          <template slot-scope="scope"
-            ><img style="width: 70px" :src="scope.row.pic"
-          /></template>
+          <template slot-scope="scope"><img style="width: 70px" :src="scope.row.pic" /></template>
         </el-table-column>
         <el-table-column label="商品名称" align="center">
           <template slot-scope="scope">
@@ -112,13 +66,9 @@
         <el-table-column label="标签" width="120" align="center">
           <template slot-scope="scope">
             上架：
-            <el-switch
-              :disabled="scope.row.publishStatus == 2"
-              @change="handlePublishStatusChange(scope.$index, scope.row)"
-              :active-value="1"
-              :inactive-value="scope.row.publishStatus == 2 ? 2 : 0"
-              v-model="scope.row.publishStatus"
-            >
+            <el-switch :disabled="scope.row.publishStatus == 2"
+              @change="handlePublishStatusChange(scope.$index, scope.row)" :active-value="1"
+              :inactive-value="scope.row.publishStatus == 2 ? 2 : 0" v-model="scope.row.publishStatus">
             </el-switch>
           </template>
         </el-table-column>
@@ -136,19 +86,13 @@
         <el-table-column label="操作" width="160" align="center">
           <template slot-scope="scope">
             <p>
-              <el-button size="mini" @click="handleShowProduct(scope.$index, scope.row)"
-                >查看
+              <el-button size="mini" @click="handleShowProduct(scope.$index, scope.row)">查看
               </el-button>
-              <el-button size="mini" @click="handleUpdateProduct(scope.$index, scope.row)"
-                >编辑
+              <el-button size="mini" @click="handleUpdateProduct(scope.$index, scope.row)">编辑
               </el-button>
             </p>
             <p>
-              <el-button
-                size="mini"
-                type="danger"
-                @click="handleDelete(scope.$index, scope.row)"
-                >删除
+              <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除
               </el-button>
             </p>
           </template>
@@ -156,16 +100,9 @@
       </el-table>
     </div>
     <div class="pagination-container">
-      <el-pagination
-        background
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        layout="total, sizes,prev, pager, next,jumper"
-        :page-size="listQuery.pageSize"
-        :page-sizes="[5, 10, 15]"
-        :current-page.sync="listQuery.pageNum"
-        :total="total"
-      >
+      <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
+        layout="total, sizes,prev, pager, next,jumper" :page-size="listQuery.pageSize" :page-sizes="[5, 10, 15]"
+        :current-page.sync="listQuery.pageNum" :total="total">
       </el-pagination>
     </div>
   </div>

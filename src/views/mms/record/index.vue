@@ -1,20 +1,14 @@
 <template> 
   <div class="app-container">
     <el-card class="filter-container" shadow="never">
-      <div>
-        <i class="el-icon-search" />
-        <span>筛选搜索</span>
-        <el-button style="float:right" type="primary" @click="handleSearchList()" size="small"> 查询搜索</el-button>
-        <el-button style="float:right;margin-right: 15px" @click="handleResetSearch()" size="small"> 重置</el-button>
-      </div>
       <div style="margin-top: 15px">
         <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
-          <el-form-item label="标题：">
+          <el-form-item label="会员名称：">
             <el-input v-model="listQuery.title" class="input-width" placeholder="标题"></el-input>
           </el-form-item>
-          <el-form-item label="发布时间：">
-            <el-date-picker class="input-width" v-model="listQuery.publishedTime" value-format="yyyy-MM-dd" type="date" placeholder="请选择时间">
-            </el-date-picker>
+          <el-form-item>
+            <el-button style="float:right" type="primary" @click="handleSearchList()" size="small"> 查询搜索</el-button>
+            <el-button style="float:right;margin-right: 15px" @click="handleResetSearch()" size="small"> 重置</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -44,7 +38,9 @@
       </el-table>
     </div>
     <div class="pagination-container">
-      <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" layout="total, sizes,prev, pager, next,jumper" :page-size="listQuery.pageSize" :page-sizes="[5,10,15]" :current-page.sync="listQuery.pageNum" :total="total">
+      <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
+        layout="total, sizes,prev, pager, next,jumper" :page-size="listQuery.pageSize" :page-sizes="[5,10,15]"
+        :current-page.sync="listQuery.pageNum" :total="total">
       </el-pagination>
     </div>
   </div>
