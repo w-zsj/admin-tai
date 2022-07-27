@@ -9,7 +9,7 @@
         </div>
       </li>
       <!-- 上传按钮 -->
-      <el-upload slot="footer" ref="uploadRef" action="#" class="uploadBox" list-type="picture-card" :auto-upload="false" :show-file-list="false" :on-change="getFile" :limit="maxCount" :on-exceed="handleExceed" :style="{ width: picWidth + 'px', height: picHeight + 'px' }" :accept='acceptType'>
+      <el-upload v-if="fileList.length<=maxCount" slot="footer" ref="uploadRef" action="#" class="uploadBox" list-type="picture-card" :auto-upload="false" :show-file-list="false" :on-change="getFile" :limit="maxCount" :on-exceed="handleExceed" :style="{ width: picWidth + 'px', height: picHeight + 'px' }" :accept='acceptType'>
         <i class="el-icon-plus uploadIcon">
           <span class="uploading" v-show="isUploading">正在上传...</span>
           <span v-if="!isUploading && maxCount && maxCount !== 99 && !isSingle" class="limitTxt">最多{{ maxCount }}张</span>
