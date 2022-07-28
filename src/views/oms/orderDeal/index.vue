@@ -30,8 +30,7 @@
       <el-button size="mini" class="btn-add" @click="handleAdd()">添加广告</el-button>
     </el-card>
 
-    <el-table ref="homeAdvertiseTable" :data="list" style="width: 100%;" @selection-change="handleSelectionChange"
-      v-loading="listLoading" border>
+    <el-table ref="homeAdvertiseTable" :data="list" style="width: 100%;" @selection-change="handleSelectionChange" v-loading="listLoading" border>
       <el-table-column type="selection" width="60" align="center"></el-table-column>
       <el-table-column label="ID" width="60" align="center">
         <template slot-scope="scope">{{scope.row.id}}</template>
@@ -75,9 +74,7 @@
     </el-table>
 
     <div class="pagination-container">
-      <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
-        layout="total, sizes,prev, pager, next,jumper" :page-size="listQuery.pageSize" :page-sizes="[5,10,15]"
-        :current-page.sync="listQuery.pageNum" :total="total">
+      <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" layout="total, sizes,prev, pager, next,jumper" :page-size="listQuery.pageSize" :page-sizes="[5,10,15]" :current-page.sync="listQuery.pageNum" :total="total">
       </el-pagination>
     </div>
 
