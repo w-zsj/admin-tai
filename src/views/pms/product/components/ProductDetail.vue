@@ -34,17 +34,18 @@
         </el-radio-group>
       </el-form-item> -->
       <el-form-item label="商品类目：" prop="productCategoryId">
-        <el-cascader :disabled='isCheck' v-model="selectProductCateValue" :options="productCateOptions">
+        <el-cascader :disabled='isCheck' :props="{ checkStrictly: true }" v-model="selectProductCateValue"
+          :options="productCateOptions" @change="handleProductAttrChange">
         </el-cascader>
       </el-form-item>
-      <el-form-item label="属性类型：" prop="productAttributeCategoryId">
+      <!-- <el-form-item label="属性类型：" prop="productAttributeCategoryId">
         <el-select :disabled='isCheck' v-model="productParam.productAttributeCategoryId" placeholder="请选择属性类型"
           @change="handleProductAttrChange">
           <el-option v-for="item in productAttributeCategoryOptions" :key="item.value" :label="item.label"
             :value="item.value">
           </el-option>
         </el-select>
-      </el-form-item>
+      </el-form-item> -->
       <!-- <el-form-item v-if="saleType" label="运费模板：" prop="feightTemplateId">
         <el-select :disabled='isCheck' v-model="productParam.feightTemplateId" placeholder="请选择运费模板"
           @change="handlefeightTemplateChange">
@@ -326,6 +327,7 @@ export default {
       tipText3: '视频时长小于等于60s，建议上传分辨率720dpi以上视频',
       productClassifyProps: {
         multiple: true, // 商品分类多选属性设置
+        checkStrictly: true
       },
       productParam: Object.assign({}, defaultProductParam),
       //选中商品类目的值
@@ -393,7 +395,7 @@ export default {
     this.getProductCateList() // 获取类目
     this.getProductClassifyList() // 获取商品分类
     // this.getFeightTemplateList()
-    this.getProductAttrCateList()
+    // this.getProductAttrCateList()
     this.getType()
   },
   methods: {
@@ -947,14 +949,6 @@ export default {
           if (this.saleType) {
             if (!reg1.test(list[i].price)) {
               this.$message.error('销售价格为必填，请输入1-7位数字,最多保留两位小数~');
-              return;
-            }
-            if (!reg1.test(list[i].vipPrice)) {
-              this.$message.error('VIP会员价格为必填，请输入1-7位数字,最多保留两位小数~');
-              return;
-            }
-            if (!reg1.test(list[i].vvipPrice)) {
-              this.$message.error('至尊会员价格为必填，请输入1-7位数字,最多保留两位小数~');
               return;
             }
           }

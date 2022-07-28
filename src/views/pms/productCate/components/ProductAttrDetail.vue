@@ -6,7 +6,7 @@
       </el-form-item>
       <el-form-item :label="`${type === 1 ? '参数':'规格'}录入方式`">
         <el-radio-group v-model="productAttr.inputType" @change="inputTypeRadio">
-          <el-radio :label="0">手动录入</el-radio>
+          <el-radio :label="0">手动录入222</el-radio>
           <!-- <el-radio :label="1" v-if='type === 0'>列表中选择</el-radio>
           <el-radio :label="2" v-if='type === 1'>复选框</el-radio> -->
         </el-radio-group>
@@ -36,7 +36,7 @@ const defaultProductAttr = {
   inputList: '',
   inputType: 0,
   name: '',
-  productAttributeCategoryId: 0,
+  productCategoryId: 0,
   relatedStatus: 0,
   searchType: 0,
   selectType: 0,
@@ -52,7 +52,7 @@ export default {
       default: false
     }
   },
-  data () {
+  data() {
     const inputListValid = (rule, value, callback) => {
       if (value) {
         const arr = value.split(/[(\r\n)\r\n]+/);
@@ -89,7 +89,7 @@ export default {
       productAttrCateList: null,
     }
   },
-  created () {
+  created() {
     if (this.isEdit) {
       getProductAttr(this.$route.query.id).then(response => {
         this.productAttr = response.data;
@@ -107,25 +107,25 @@ export default {
     this.getCateList();
   },
   methods: {
-    getChannel () {
+    getChannel() {
       return store.getters.channel
     },
-    inputTypeRadio (e) {
+    inputTypeRadio(e) {
       if (e == 2) this.$set(this.productAttr, 'selectType', 2)
     },
-    getCateList () {
+    getCateList() {
       let listQuery = { pageNum: 1, pageSize: 100 };
       fetchList(listQuery).then(response => {
         this.productAttrCateList = response.data.list;
       });
     },
-    resetProductAttr () {
+    resetProductAttr() {
       this.productAttr = Object.assign({}, defaultProductAttr);
-      this.productAttr.productAttributeCategoryId = Number(this.$route.query.cid);
+      this.productAttr.productCategoryId = Number(this.$route.query.cid);
       this.productAttr.type = Number(this.$route.query.type);
       // this.productAttr.bizCode = this.getChannel();
     },
-    onSubmit (formName) {
+    onSubmit(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.$confirm('是否提交数据', '提示', {
@@ -169,7 +169,7 @@ export default {
         }
       });
     },
-    resetForm (formName) {
+    resetForm(formName) {
       this.$refs[formName].resetFields();
       this.resetProductAttr();
     }

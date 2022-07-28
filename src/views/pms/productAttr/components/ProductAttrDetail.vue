@@ -36,7 +36,7 @@ const defaultProductAttr = {
   inputList: '',
   inputType: 0,
   name: '',
-  productAttributeCategoryId: 0,
+  productCategoryId: 0,
   relatedStatus: 0,
   searchType: 0,
   selectType: 0,
@@ -94,6 +94,8 @@ export default {
         this.productAttr = response.data;
         this.productAttr.inputList = this.productAttr.inputList && this.productAttr.inputList.join('\n');
         this.type = response.data.type;
+        delete this.productAttr.productAttributeCategoryId
+        this.productAttr.productCategoryId = Number(this.$route.query.cid);
       });
     } else {
       this.resetProductAttr();
@@ -103,7 +105,7 @@ export default {
     } else {
       this.$route.meta.title = '添加商品属性';
     }
-    this.getCateList();
+    // this.getCateList();
   },
   methods: {
     inputTypeRadio(e) {
@@ -117,7 +119,7 @@ export default {
     },
     resetProductAttr() {
       this.productAttr = Object.assign({}, defaultProductAttr);
-      this.productAttr.productAttributeCategoryId = Number(this.$route.query.cid);
+      this.productAttr.productCategoryId = Number(this.$route.query.cid);
       this.productAttr.type = Number(this.$route.query.type);
     },
     onSubmit(formName) {

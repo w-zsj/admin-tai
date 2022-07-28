@@ -19,9 +19,9 @@
           <el-radio :label="0">否</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="分类图标：">
+      <!-- <el-form-item label="分类图标：">
         <single-upload v-model="productCate.icon"></single-upload>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="关键词：">
         <el-input v-model="productCate.keywords"></el-input>
       </el-form-item>
@@ -61,7 +61,7 @@ export default {
       default: false
     }
   },
-  data () {
+  data() {
     return {
       productCate: Object.assign({}, defaultProductCate),
       selectProductCateList: [],
@@ -77,36 +77,36 @@ export default {
       }]
     }
   },
-  created () {
+  created() {
     if (this.isEdit) {
       getProductCate(this.$route.query.id).then(response => {
         this.productCate = response.data;
       });
-      getProductAttrInfo(this.$route.query.id).then(response => {
-        if (response.data != null && response.data.length > 0) {
-          this.filterProductAttrList = [];
-          for (let i = 0; i < response.data.length; i++) {
-            this.filterProductAttrList.push({
-              key: Date.now() + i,
-              value: [response.data[i].attributeCategoryId, response.data[i].attributeId]
-            })
-          }
-        }
-      });
+      // getProductAttrInfo(this.$route.query.id).then(response => {
+      //   if (response.data != null && response.data.length > 0) {
+      //     this.filterProductAttrList = [];
+      //     for (let i = 0; i < response.data.length; i++) {
+      //       this.filterProductAttrList.push({
+      //         key: Date.now() + i,
+      //         value: [response.data[i].attributeCategoryId, response.data[i].attributeId]
+      //       })
+      //     }
+      //   }
+      // });
     } else {
       this.productCate = Object.assign({}, defaultProductCate);
     }
     this.getSelectProductCateList();
-    this.getProductAttrCateList();
+    // this.getProductAttrCateList();
   },
   methods: {
-    getSelectProductCateList () {
+    getSelectProductCateList() {
       fetchList(0, { pageSize: 100, pageNum: 1 }).then(response => {
         this.selectProductCateList = response.data.list;
         this.selectProductCateList.unshift({ id: 0, name: '无上级分类' });
       });
     },
-    getProductAttrCateList () {
+    getProductAttrCateList() {
       fetchListWithAttr().then(response => {
         let list = response.data;
         for (let i = 0; i < list.length; i++) {
@@ -124,7 +124,7 @@ export default {
         }
       });
     },
-    getProductAttributeIdList () {
+    getProductAttributeIdList() {
       //获取选中的筛选商品属性
       let productAttributeIdList = [];
       for (let i = 0; i < this.filterProductAttrList.length; i++) {
@@ -135,7 +135,7 @@ export default {
       }
       return productAttributeIdList;
     },
-    onSubmit (formName) {
+    onSubmit(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.$confirm('是否提交数据', '提示', {
@@ -177,7 +177,7 @@ export default {
         }
       });
     },
-    resetForm (formName) {
+    resetForm(formName) {
       this.$refs[formName].resetFields();
       this.productCate = Object.assign({}, defaultProductCate);
       this.getSelectProductCateList();
@@ -185,7 +185,7 @@ export default {
         value: []
       }];
     },
-    removeFilterAttr (productAttributeId) {
+    removeFilterAttr(productAttributeId) {
       if (this.filterProductAttrList.length === 1) {
         this.$message({
           message: '至少要留一个',

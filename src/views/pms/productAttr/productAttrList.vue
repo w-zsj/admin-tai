@@ -36,7 +36,9 @@
       </el-table>
     </div>
     <div class="pagination-container">
-      <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" layout="total, sizes,prev, pager, next,jumper" :page-size="listQuery.pageSize" :page-sizes="[5,10,15]" :current-page.sync="listQuery.pageNum" :total="total">
+      <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
+        layout="total, sizes,prev, pager, next,jumper" :page-size="listQuery.pageSize" :page-sizes="[5,10,15]"
+        :current-page.sync="listQuery.pageNum" :total="total">
       </el-pagination>
     </div>
   </div>
@@ -119,7 +121,7 @@ export default {
       this.getList();
     },
     handleUpdate(index, row) {
-      this.$router.push({ path: '/pms/updateProductAttr', query: { id: row.id } });
+      this.$router.push({ path: '/pms/updateProductAttr', query: { id: row.id, cid: this.$route.query.cid } });
     },
     handleDeleteProductAttr(ids) {
       this.$confirm('是否要删除该属性', '提示', {
