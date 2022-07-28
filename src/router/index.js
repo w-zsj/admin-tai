@@ -115,12 +115,12 @@ export const asyncRouterMap = [
         meta: { title: '修改商品分类' },
         hidden: true
       },
-      {
-        path: 'productAttr',
-        name: 'productAttr',
-        component: () => import('@/views/pms/productAttr/index'),
-        meta: { title: '商品类型', icon: 'product-attr' }
-      },
+      // {
+      //   path: 'productAttr',
+      //   name: 'productAttr',
+      //   component: () => import('@/views/pms/productAttr/index'),
+      //   meta: { title: '商品类型', icon: 'product-attr' }
+      // },
       {
         path: 'productAttrList',
         name: 'productAttrList',

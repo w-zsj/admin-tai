@@ -1,22 +1,24 @@
 import request from '@/utils/request'
-export function homeApi(params = {}) {
+// 添加首页管理员数据操作记录
+export function addHomeAdminDataLog(params = {}) {
     return request({
-        url: '/getHomeCountInfo',
+        url: '/addHomeAdminDataLog',
         method: 'post',
         data: params
     })
 }
-export function statisticsOrder(data) {
+// 获取首页统计信息
+export function getHomeCountInfo(data) {
     return request({
-        url: '/queryOrderStatisticsList',
+        url: '/getHomeCountInfo',
         method: 'post',
         data: data
     })
 }
-// 添加首页管理员数据操作记录
-export function addHomeAdminDataLog(data) {
+// 查询订单统计
+export function queryOrderStatisticsList(data) {
     return request({
-        url: '/addHomeAdminDataLog',
+        url: '/queryOrderStatisticsList',
         method: 'post',
         data: data
     })

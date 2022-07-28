@@ -62,6 +62,7 @@
 </template>
 
 <script>
+import { addHomeAdminDataLog, getHomeCountInfo, queryOrderStatisticsList } from "@/api/home"
 import { recordList, statistics, otherMenuEnter } from "./config";
 var reg = /(\d)(?=(?:\d{3})+$)/g; // 千位分割
 export default {
@@ -74,8 +75,21 @@ export default {
     };
   },
   mounted() {
+    this.addHomeAdminDataLog()
   },
   methods: {
+    // 添加首页管理员数据操作记录
+    addHomeAdminDataLog() {
+      // dataType	数据类型: 1->新注册用户数；2->会员充值数；3->订单数 4->订单销售额；5->订单销售瓶数	
+      addHomeAdminDataLog({ dataType: 1 }).then(res => {
+
+      })
+    },
+    getHomeCountInfo() {
+      getHomeCountInfo().then(res => {
+
+      })
+    },
     randomRgb() {
       let R = Math.floor(Math.random() * 255);
       let G = Math.floor(Math.random() * 255);
