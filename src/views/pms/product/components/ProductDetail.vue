@@ -543,6 +543,7 @@ export default {
       });
     },
     handleProductAttrChange(value) {
+      value = value[value.length - 1]
       this.skuStockList = [];
       this.getProductAttrList(0, value);
       this.getProductAttrList(1, value);
