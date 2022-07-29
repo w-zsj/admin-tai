@@ -34,7 +34,7 @@
         </el-radio-group>
       </el-form-item> -->
       <el-form-item label="商品类目：" prop="productCategoryId">
-        <el-cascader :disabled='isCheck' :props="{ checkStrictly: true }" v-model="selectProductCateValue"
+        <el-cascader :disabled='isCheck' :props="{checkStrictly:true}" v-model="selectProductCateValue"
           :options="productCateOptions" @change="handleProductAttrChange">
         </el-cascader>
       </el-form-item>
@@ -275,8 +275,8 @@ export default {
       })
     },
     selectProductCateValue: function (newValue) {
-      if (newValue != null && newValue.length === 2) {
-        this.productParam.productCategoryId = newValue[1];
+      if (newValue != null && newValue.length) {
+        this.productParam.productCategoryId = newValue[newValue.length - 1];
         this.productParam.productCategoryName = this.getCateNameById(this.productParam.productCategoryId);
       } else {
         this.productParam.productCategoryId = null;
@@ -327,7 +327,7 @@ export default {
       tipText3: '视频时长小于等于60s，建议上传分辨率720dpi以上视频',
       productClassifyProps: {
         multiple: true, // 商品分类多选属性设置
-        checkStrictly: true
+        // checkStrictly: true
       },
       productParam: Object.assign({}, defaultProductParam),
       //选中商品类目的值
@@ -359,10 +359,9 @@ export default {
           { required: true, message: '请输入商品名称', trigger: 'blur' },
           { min: 1, max: 30, message: '请输入1-30位中英文、数字或符号', trigger: 'blur' }
         ],
-        productCategoryId: [{ required: true, message: '请选择商品类目', trigger: 'blur' }],
         // score: [{ required: true, message: '请输入专家评分', trigger: 'blur' }],
         // feightTemplateId: [{ required: true, message: '请选择运费模板', trigger: 'blur' }],
-        productAttributeCategoryId: [{ required: true, message: '请选择属性类型', trigger: 'blur' }],
+        productCategoryId: [{ required: true, message: '请选择属性类型', trigger: 'blur' }],
         productSn: [
           { required: true, message: "请填写商品货号", trigger: 'blur' },
           { min: 1, max: 30, message: '请输入1-30位英文、数字', trigger: 'blur' }],
@@ -454,12 +453,16 @@ export default {
     getCateNameById(id) {
       let name = null;
       for (let i = 0; i < this.productCateOptions.length; i++) {
-        for (let j = 0; j < this.productCateOptions[i].children.length; j++) {
-          if (this.productCateOptions[i].children[j].value === id) {
-            name = this.productCateOptions[i].children[j].label;
-            return name;
+        if (this.productCateOptions[i].value == id) {
+          name = this.productCateOptions[i].label;
+          return name;
+        } else
+          for (let j = 0; j < this.productCateOptions[i].children.length; j++) {
+            if (this.productCateOptions[i].children[j].value === id) {
+              name = this.productCateOptions[i].children[j].label;
+              return name;
+            }
           }
-        }
       }
       return name;
     },
@@ -545,6 +548,7 @@ export default {
     handleProductAttrChange(value) {
       value = value[value.length - 1]
       this.skuStockList = [];
+      console.log('selectProductCateValue', this.selectProductCateValue)
       this.getProductAttrList(0, value);
       this.getProductAttrList(1, value);
     },
@@ -985,7 +989,6 @@ export default {
       }
       const albumPics = [...this.albumPics];
       this.$refs[formName].validate((valid, err) => {
-        console.log(1231232312312, valid)
         if (valid || err.hasOwnProperty('pic') && this.albumPics.length) {
           this.mergeProductAttrValue();
           this.mergeProductAttrPics();
