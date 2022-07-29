@@ -10,7 +10,9 @@
             <el-input class="input-width" v-model="listQuery.productName" placeholder="商品货号"></el-input>
           </el-form-item>
           <el-form-item label="下单日期：">
-            <el-date-picker v-model="listQuery.timeRange" type="daterange" align="right" size="small" unlink-panels range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd" style="width: 100%;">
+            <el-date-picker v-model="listQuery.timeRange" type="daterange" align="right" size="small" unlink-panels
+              range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd"
+              style="width: 100%;">
             </el-date-picker>
           </el-form-item>
           <el-form-item label="客户名称：">
@@ -55,14 +57,8 @@
                   <template v-if="item.realAmount">￥{{ item.realAmount }}</template>
                 </div>
                 <div>x{{ item.productQuantity }}</div>
-                <div v-if="item.refundStatus">{{ item.refundStatus | formatRefundStatus }}</div>
               </div>
             </div>
-          </template>
-        </GridColumn>
-        <GridColumn field="orderType" title="订单类型">
-          <template slot="body" slot-scope="scope">
-            {{ scope.row.orderType | orderTypeFilter }}
           </template>
         </GridColumn>
         <GridColumn field="orderStatusName" title="订单状态">
@@ -78,7 +74,8 @@
         <GridColumn field="payAmount" title="金额(￥)">
           <template slot="body" slot-scope="scope">
             <div class="deliverySn">实付: {{scope.row.payAmount}}</div>
-            <div class="deliverySn">订单: {{scope.row.useIntegration ? `${scope.row.useIntegration}积分+` : ''}}￥{{scope.row.totalAmount}}</div>
+            <div class="deliverySn">订单:
+              {{scope.row.useIntegration ? `${scope.row.useIntegration}积分+` : ''}}￥{{scope.row.totalAmount}}</div>
             <div class="deliverySn" v-if="scope.row.discountAmount">改价：-{{scope.row.discountAmount}}</div>
             <div class="deliverySn">运费: {{scope.row.freightAmount}} </div>
             <div v-if="scope.row.promotionAmount">优惠: -{{scope.row.promotionAmount}}</div>
@@ -91,7 +88,8 @@
               <el-button size="mini" @click="handleViewOrder(scope.$index, scope.row)">查看订单</el-button>
             </p>
             <p>
-              <el-button size="mini" @click="handleDeliveryOrder(scope.$index, scope.row)" v-show="scope.row.canDelivery">订单发货</el-button>
+              <el-button size="mini" @click="handleDeliveryOrder(scope.$index, scope.row)"
+                v-show="scope.row.canDelivery">订单发货</el-button>
             </p>
             <!-- <p>
               <el-button size="mini" @click="handleDeliveryOrder(scope.$index, scope.row)" v-show="scope.row.status === 2">修改物流</el-button>
@@ -100,20 +98,25 @@
               <el-button size="mini" @click="handleViewLogistics(scope.$index, scope.row)" v-show="scope.row.status === 2 || scope.row.status === 3">订单跟踪</el-button>
             </p> -->
             <p>
-              <el-button size="mini" type="danger" @click="handleDeleteOrder(scope.$index, scope.row)" v-show="scope.row.status === 0">修改价格</el-button>
+              <el-button size="mini" type="danger" @click="handleDeleteOrder(scope.$index, scope.row)"
+                v-show="scope.row.status === 0">修改价格</el-button>
             </p>
           </template>
         </GridColumn>
         <template slot="group" slot-scope="scope">
-          <span style='marginRight:8px;'>订单编号：{{scope.value}}</span><span>下单时间：{{scope.rows[0].createTime|formatCreateTime}}</span>
+          <span
+            style='marginRight:8px;'>订单编号：{{scope.value}}</span><span>下单时间：{{scope.rows[0].createTime|formatCreateTime}}</span>
         </template>
       </DataGrid>
-      <div v-if="!list || !list.length" style="text-align: center; line-height: 200px; color:#606266;border:1px solid #dcdfe6 ; border-top:0;">
+      <div v-if="!list || !list.length"
+        style="text-align: center; line-height: 200px; color:#606266;border:1px solid #dcdfe6 ; border-top:0;">
         暂无数据~
       </div>
     </div>
     <div class="pagination-container">
-      <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" layout="total, sizes,prev, pager, next,jumper" :current-page.sync="listQuery.pageNum" :page-size="listQuery.pageSize" :page-sizes="[5,10,15]" :total="total">
+      <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
+        layout="total, sizes,prev, pager, next,jumper" :current-page.sync="listQuery.pageNum"
+        :page-size="listQuery.pageSize" :page-sizes="[5,10,15]" :total="total">
       </el-pagination>
     </div>
 
@@ -190,7 +193,6 @@ const defaultListQuery = {
   productName: null,
   skuCode: null
 };
-const refundStatusOptions = [, "商家处理中", "退款中", "已退款", "已取消"];
 let that;
 export default {
   name: "order",
@@ -209,7 +211,6 @@ export default {
         content: null,
         orderIds: [],
       },
-      orderTypeEnum: ['正常订单', '秒杀订单', '拼团订单', '积分商城订单'],
       statusOptions: [
         {
           label: "全部",
@@ -222,74 +223,27 @@ export default {
           name: "wait_pay"
         },
         {
-          label: "待发货",
+          label: "待审核",
           value: 1,
           name: "wait_sent"
         },
         {
-          label: "已发货",
-          value: 2,
-          name: "already_sent"
+          label: "待收货",
+          value: 3,
+          name: "wait_get"
+        },
+        {
+          label: "已取消 ",
+          value: 4,
+          name: 'already_cancel'
         },
         {
           label: "已完成",
-          value: 3,
-          name: 'already_completed'
-        },
-        {
-          label: "已取消",
-          value: 4,
-          name: 'cancel'
-        },
-        {
-          label: "订单关闭",
           value: 5,
-          name: 'close'
+          name: 'already_completed'
         },
       ],
       activeName: "all",
-      orderTypeOptions: [
-        {
-          label: "正常订单",
-          value: 0,
-        },
-        {
-          label: "秒杀订单",
-          value: 1,
-        },
-        {
-          label: "拼团订单",
-          value: 2,
-        },
-        {
-          label: "积分商城订单",
-          value: 3,
-        },
-      ],
-      sourceTypeOptions: [
-        {
-          label: "PC订单",
-          value: 0,
-        },
-        {
-          label: "APP订单",
-          value: 1,
-        },
-      ],
-      operateOptions: [
-        {
-          label: "批量发货",
-          value: 1,
-        },
-        {
-          label: "关闭订单",
-          value: 2,
-        },
-        {
-          label: "删除订单",
-          value: 3,
-        },
-      ],
       currentOrderSn: "",
       logisticsDialogVisible: false,
       priceDialog: false, //修改价格
@@ -297,73 +251,10 @@ export default {
       modifiedPrice: "",
       iscountPrice: "", //折扣价
       payAmount: "", //真实价
-      pickerOptions: {
-        shortcuts: [{
-          text: '最近一周',
-          onClick(picker) {
-            const end = new Date();
-            const start = new Date();
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-            picker.$emit('pick', [start, end]);
-          }
-        }, {
-          text: '最近一个月',
-          onClick(picker) {
-            const end = new Date();
-            const start = new Date();
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-            picker.$emit('pick', [start, end]);
-          }
-        }, {
-          text: '最近三个月',
-          onClick(picker) {
-            const end = new Date();
-            const start = new Date();
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-            picker.$emit('pick', [start, end]);
-          }
-        }]
-      },
       timeRange: []
     };
   },
   computed: {
-    getDataWithKey() {
-      return key => {
-        switch (key) {
-          case "orderType":
-            return this.orderTypeOptions
-          case 'timeRange':
-            return {
-              shortcuts: [{
-                text: '最近一周',
-                onClick(picker) {
-                  const end = new Date();
-                  const start = new Date();
-                  start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-                  picker.$emit('pick', [start, end]);
-                }
-              }, {
-                text: '最近一个月',
-                onClick(picker) {
-                  const end = new Date();
-                  const start = new Date();
-                  start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-                  picker.$emit('pick', [start, end]);
-                }
-              }, {
-                text: '最近三个月',
-                onClick(picker) {
-                  const end = new Date();
-                  const start = new Date();
-                  start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-                  picker.$emit('pick', [start, end]);
-                }
-              }]
-            }
-        }
-      };
-    },
   },
   created() {
     let status = this.$route.query.status
@@ -399,18 +290,6 @@ export default {
     formatCreateTime(time) {
       return formatDate(time, "yyyy-MM-dd hh:mm:ss");
     },
-    formatRefundStatus(value) {
-      return refundStatusOptions[value];
-    },
-    orderTypeFilter(type) {
-      if ([4, 5].some(v => v === type)) {
-        return "积分商城订单";
-      } else if ([0, 1, 2].some(v => v === type)) {
-        return that.orderTypeEnum[type];
-      } else {
-        return "-";
-      }
-    }
   },
   methods: {
     FormCallBack(searchParms) {

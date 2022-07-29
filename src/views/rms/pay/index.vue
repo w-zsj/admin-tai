@@ -51,6 +51,7 @@
   </div>
 </template>
 <script>
+import { payList } from '@/api/paySetting.js'
 const defaultListQuery = {
   pageNum: 1,
   pageSize: 10,
@@ -104,11 +105,9 @@ export default {
     },
     getList() {
       this.listLoading = true;
-      //   fetchList(this.listQuery).then((response) => {
-      //     this.listLoading = false;
-      //     this.list = response.data.list;
-      //     this.total = response.data.total;
-      //   });
+      payList().then(res => {
+
+      })
     },
   },
 };
