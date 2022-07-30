@@ -91,6 +91,13 @@ export function orderApprove(data) {
     data: data
   })
 }
+export function printOrder(data) {
+  return request({
+    url: '/order/print',
+    method: 'post',
+    data: data
+  })
+}
 
 export function downloadOrderSnDetail(data) {
   return request({

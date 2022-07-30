@@ -94,10 +94,9 @@
             <p v-if="scope.row.status == 1">
               <el-button size="mini" @click="audit(scope.row)">审核订单</el-button>
             </p>
-            <!-- <p>
-              <el-button size="mini" @click="handleDeliveryOrder(scope.$index, scope.row)"
-                v-show="scope.row.canDelivery">订单发货</el-button>
-            </p> -->
+            <p v-if="scope.row.status == 3">
+              <el-button size="mini" @click="printOrder(scope.row)" v-show="scope.row.canDelivery">打印订单</el-button>
+            </p>
           </template>
         </GridColumn>
         <template slot="group" slot-scope="scope">
@@ -138,50 +137,6 @@
         <el-button type="primary" @click="handleAuditOrderConfirm">确 定</el-button>
       </span>
     </el-dialog>
-
-    <!-- <el-dialog title="修改价格" width="80%" :visible.sync="priceDialog">
-      <el-table :data="gridData" class="tabmodal">
-        <el-table-column property="productPic" label="商品信息" :width="320">
-          <template slot-scope="scope" v-if="scope.$index == 0">
-            <div class="orderProductItem" v-for="(item, index) in gridData" :key="index">
-              <div class="orderProductItemLeft">
-                <div class="orderProductItemLeftImage">
-                  <img v-if='item.productPic' :src="item.productPic" alt="" />
-                  <div v-else>暂无图片</div>
-                </div>
-                <p>{{item.productName }}</p>
-              </div>
-              <div class="orderProductItemRight">
-                <div>￥{{ item.productPrice }}</div>
-                <div>x{{ item.productQuantity }}</div>
-              </div>
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column property="payAmount" label="现价">
-          <template slot-scope="scope" v-if="scope.$index == 0"> ￥{{ scope.row.payAmount }}</template>
-        </el-table-column>
-        <el-table-column property="modifiedPrice" label="改价为">
-          <template slot-scope="scope" v-if="scope.$index == 0">
-            <el-input v-model="modifiedPrice" @input='modifiedPriceChange'>
-              <template slot="prepend" style="width: 30px">￥</template>
-            </el-input>
-          </template>
-        </el-table-column>
-        <el-table-column property="iscountPrice" label="折扣">
-          <template slot-scope="scope">
-            <el-input v-model="iscountPrice" v-if="scope.$index == 0" @input='iscountPriceChange'>
-              <template slot="append">折</template>
-            </el-input>
-          </template>
-        </el-table-column>
-      </el-table>
-      <span slot="footer" class="dialog-footer">
-        共减免<span class="gray">￥{{(payAmount-modifiedPrice)|tofix}}</span> 需支付<span class="red">￥{{modifiedPrice}}</span>
-        <el-button @click="CancelDitPrice">取 消</el-button>
-        <el-button type="primary" @click="confDitPrice">确 定</el-button>
-      </span>
-    </el-dialog> -->
   </div>
 </template>
 <script>
@@ -192,6 +147,7 @@ import {
   orderApprove,
   editPrice,
   downloadOrderSnDetail,
+  printOrder,
 } from "@/api/order";
 import { formatDate } from "@/utils/date";
 import { download } from "@/utils/index";
@@ -465,6 +421,17 @@ export default {
           this.getList();
         }
       });
+    },
+    // 打印订单
+    printOrder(row) {
+      printOrder({ id: row.id }).then(res => {
+        if (res.code == 1)
+          this.$message({
+            message: "打印成功",
+            type: "success",
+            duration: 1000,
+          });
+      })
     },
     getList() {
       this.listLoading = true;
