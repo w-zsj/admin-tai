@@ -1,9 +1,9 @@
 <template>
   <div>
-    <el-card class="login-form-layout">
+    <el-card class="login-form-layout" shadow="never">
       <el-form autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
         <div style="text-align: center">
-          <svg-icon icon-class="login-mall" style="width: 56px;height: 56px;color: #409EFF"></svg-icon>
+          <img :src="logo" class="login-center-layout">
         </div>
         <h2 class="login-title color-main">泰嗨乐管理后台</h2>
         <el-form-item prop="username">
@@ -14,7 +14,8 @@
           </el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input name="password" :type="pwdType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on" placeholder="请输入密码">
+          <el-input name="password" :type="pwdType" @keyup.enter.native="handleLogin" v-model="loginForm.password"
+            autoComplete="on" placeholder="请输入密码">
             <span slot="prefix">
               <svg-icon icon-class="password" class="color-main"></svg-icon>
             </span>
@@ -30,14 +31,14 @@
         </el-form-item>
       </el-form>
     </el-card>
-    <img :src="login_center_bg" class="login-center-layout">
+    <!-- <img :src="login_center_bg" class="login-center-layout"> -->
   </div>
 </template>
 
 <script>
 import { isvalidUsername } from '@/utils/validate';
 import { setCookie, getCookie } from '@/utils/support';
-import login_center_bg from '@/assets/images/login_center_bg.png'
+import logo from '@/assets/images/logo.png'
 
 export default {
   name: 'login',
@@ -67,7 +68,7 @@ export default {
       },
       loading: false,
       pwdType: 'password',
-      login_center_bg
+      logo
     }
   },
   created() {
@@ -112,13 +113,23 @@ export default {
 </script>
 
 <style scoped>
+.el-card {
+  border: 0;
+}
+.color-main {
+  color: #67c23a;
+}
+.el-button--primary {
+  background-color: #67c23a;
+  border-color: #67c23a;
+}
 .login-form-layout {
-  position: absolute;
+  /* position: absolute;
   left: 0;
-  right: 0;
+  right: 0; */
   width: 360px;
   margin: 140px auto;
-  border-top: 10px solid #409eff;
+  /* border-top: 10px solid #409eff; */
 }
 
 .login-title {
@@ -126,11 +137,9 @@ export default {
 }
 
 .login-center-layout {
-  background: #409eff;
-  width: auto;
-  height: auto;
+  width: 100px;
+  height: 100px;
   max-width: 100%;
   max-height: 100%;
-  margin-top: 200px;
 }
 </style>
