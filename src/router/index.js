@@ -172,12 +172,12 @@ export const asyncRouterMap = [
         meta: { title: '编辑广告' },
         hidden: true
       },
-      {
-        path: 'classify',
-        name: 'bannerClassify',
-        component: () => import('@/views/sms/bannerClassify/index'),
-        meta: { title: '分类', icon: 'sms-new' }
-      },
+      // {
+      //   path: 'classify',
+      //   name: 'bannerClassify',
+      //   component: () => import('@/views/sms/bannerClassify/index'),
+      //   meta: { title: '分类', icon: 'sms-new' }
+      // },
       {
         path: 'new',
         name: 'homeNew',
@@ -193,30 +193,37 @@ export const asyncRouterMap = [
     name: 'oms',
     meta: { title: '交易管理', icon: 'total-week' },
     children: [
-      {
-        path: 'trade',
-        name: 'omsTrade',
-        component: () => import('@/views/oms/trade/index.vue'),
-        meta: { title: '交易列表', icon: 'order-setting' },
-      },
+      // {
+      //   path: 'trade',
+      //   name: 'omsTrade',
+      //   component: () => import('@/views/oms/trade/index.vue'),
+      //   meta: { title: '交易列表', icon: 'order-setting' },
+      // },
       {
         path: 'order',
         name: 'omsOrder',
         component: () => import('@/views/oms/order/index.vue'),
-        meta: { title: '交易列表', icon: 'product-list' },
+        meta: { title: '订单列表', icon: 'product-list' },
       },
       {
-        path: 'trade/money',
-        name: 'omstradeMoney',
-        component: () => import('@/views/oms/tradeMoney/index.vue'),
-        meta: { title: '交易金额', icon: 'total-yesterday' },
+        path: 'orderDetail',
+        name: 'orderDetail',
+        component: () => import('@/views/oms/order/orderDetail'),
+        meta: { title: '订单详情' },
+        hidden: true
       },
-      {
-        path: 'order/deal',
-        name: 'omsOrderDeal',
-        component: () => import('@/views/oms/orderDeal/index.vue'),
-        meta: { title: '订单处理', icon: 'order-return-reason' },
-      },
+      // {
+      //   path: 'trade/money',
+      //   name: 'omstradeMoney',
+      //   component: () => import('@/views/oms/tradeMoney/index.vue'),
+      //   meta: { title: '交易金额', icon: 'total-yesterday' },
+      // },
+      // {
+      //   path: 'order/deal',
+      //   name: 'omsOrderDeal',
+      //   component: () => import('@/views/oms/orderDeal/index.vue'),
+      //   meta: { title: '订单处理', icon: 'order-return-reason' },
+      // },
     ]
   },
   {
@@ -226,12 +233,6 @@ export const asyncRouterMap = [
     name: 'rms',
     meta: { title: '支付管理', icon: 'total-today' },
     children: [
-      {
-        path: 'pay',
-        name: 'rmsPay',
-        component: () => import('@/views/rms/pay/index.vue'),
-        meta: { title: '支付列表', icon: 'sms-coupon' },
-      },
       {
         path: 'recharge',
         name: 'rmsRecharge',
@@ -259,12 +260,12 @@ export const asyncRouterMap = [
         component: () => import('@/views/mms/member/index.vue'),
         meta: { title: '会员列表', icon: 'order-setting' },
       },
-      {
-        path: 'record',
-        name: 'mmsRecord',
-        component: () => import('@/views/mms/record/index.vue'),
-        meta: { title: '记录管理', icon: 'vip' },
-      },
+      // {
+      //   path: 'record',
+      //   name: 'mmsRecord',
+      //   component: () => import('@/views/mms/record/index.vue'),
+      //   meta: { title: '记录管理', icon: 'vip' },
+      // },
     ]
   },
   {

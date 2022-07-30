@@ -44,11 +44,11 @@
     </el-card>
     <div class="table-container">
       <el-card class="operate-container" shadow="never">
-        <div class="flex">
-          <div class="table-tree">
+        <div class="">
+          <!-- <div class="table-tree">
             <div class="tit">广告图分类</div>
             <el-tree :data="productCateOptions" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
-          </div>
+          </div> -->
           <el-table ref="homeAdvertiseTable" :data="list" style="width: 100%" @selection-change="handleSelectionChange"
             v-loading="listLoading" border>
             <!-- <el-table-column type="selection" width="60" align="center"></el-table-column> -->
@@ -58,9 +58,9 @@
             <el-table-column label="排序" width="60" align="center">
               <template slot-scope="scope">{{ scope.row.sort }}</template>
             </el-table-column>
-            <el-table-column label="分类" align="center">
+            <!-- <el-table-column label="分类" align="center">
               <template slot-scope="scope">{{ scope.row.name }}</template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column label="图片" align="center">
               <template slot-scope="scope">
                 <img v-if="scope.row.pic" style="height: 80px" :src="scope.row.pic" />
@@ -146,7 +146,7 @@ export default {
   },
   created() {
     this.getList();
-    this.getProductCateList();
+    // this.getProductCateList();
   },
   mounted() {
     this.$nextTick(() => {

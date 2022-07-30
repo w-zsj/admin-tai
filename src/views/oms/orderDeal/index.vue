@@ -1,64 +1,61 @@
-<template> 
+<template>
+   
   <div class="app-container">
     <el-card class="filter-container" shadow="never">
       <div style="margin-top: 15px">
         <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
-          <el-form-item label="广告名称：">
+          <el-form-item label="订单编号：">
             <el-input v-model="listQuery.name" class="input-width" placeholder="请输入关键词"></el-input>
           </el-form-item>
-          <el-form-item>
-            <el-button style="float:right" type="primary" @click="handleSearchList()" size="small"> 查询搜索</el-button>
-            <el-button style="float:right;margin-right: 15px" @click="handleResetSearch()" size="small"> 重置</el-button>
+          <el-form-item label="产品名称：">
+            <el-input v-model="listQuery.name" class="input-width" placeholder="请输入关键词"></el-input>
           </el-form-item>
-          <!-- <el-form-item label="可见类型：">
-            <el-select v-model="listQuery.type" placeholder="请选择可见类型" clearable class="input-width">
-              <el-option v-for="item in typeOptions" :key="item.value" :label="item.label" :value="item.value">
-              </el-option>
-            </el-select>
-          </el-form-item> -->
+          <el-form-item label="添加时间：">
+            <el-date-picker class="input-width" v-model="listQuery.publishedTime" value-format="yyyy-MM-dd" type="date"
+              placeholder="请选择时间">
+            </el-date-picker>
+          </el-form-item>
+          <el-form-item>
+            <el-button style="float: right" type="primary" @click="handleSearchList()" size="small">
+              查询搜索</el-button>
+            <el-button style="float: right; margin-right: 15px" @click="handleResetSearch()" size="small">
+              重置</el-button>
+          </el-form-item>
         </el-form>
       </div>
     </el-card>
-    <el-card class="operate-container" shadow="never">
-      <i class="el-icon-tickets"></i>
-      <span>数据列表</span>
-      <span>
-        <el-button @click="batchHandleProduct('off')" size="mini">
-          批量删除
-        </el-button>
-      </span>
-      <el-button size="mini" class="btn-add" @click="handleAdd()">添加广告</el-button>
-    </el-card>
-
-    <el-table ref="homeAdvertiseTable" :data="list" style="width: 100%;" @selection-change="handleSelectionChange" v-loading="listLoading" border>
+    <div style="margin-top: 20px">
+      <el-tabs v-model="activeName" type="card" @tab-click="selectStatus">
+        <el-tab-pane v-for="(item, index) in statusOptions" :key="index" :label="item.label" :name="item.name">
+        </el-tab-pane>
+      </el-tabs>
+    </div>
+    <el-table ref="homeAdvertiseTable" :data="list" style="width: 100%" v-loading="listLoading" border>
       <el-table-column type="selection" width="60" align="center"></el-table-column>
-      <el-table-column label="ID" width="60" align="center">
-        <template slot-scope="scope">{{scope.row.id}}</template>
+      <el-table-column label="订单编号" align="center">
+        <template slot-scope="scope">{{ scope.row.id }}</template>
       </el-table-column>
-      <el-table-column label="排序" width="60" align="center">
-        <template slot-scope="scope">{{scope.row.sort}}</template>
+      <el-table-column label="订单内容" align="center">
+        <template slot-scope="scope">{{ scope.row.sort }}</template>
       </el-table-column>
-      <el-table-column label="分类" align="center">
-        <template slot-scope="scope">{{scope.row.name}}</template>
+      <el-table-column label="交易金额" align="center">
+        <template slot-scope="scope">{{ scope.row.name }}</template>
       </el-table-column>
-      <el-table-column label="图片" align="center">
+      <el-table-column label="类型" align="center">
+        <template slot-scope="scope">{{ scope.row.name }}</template>
+      </el-table-column>
+      <el-table-column label="交易时间" align="center">
+        <template slot-scope="scope">{{ scope.row.createTime || "-" }}</template>
+      </el-table-column>
+      <el-table-column label="数量" align="center">
+        <template slot-scope="scope">{{scope.row.number}}</template>
+      </el-table-column>
+      <el-table-column label="状态" align="center">
+        <template slot-scope="scope">{{ scope.row.status }}</template>
+      </el-table-column>
+      <el-table-column label="说明" align="center">
         <template slot-scope="scope">
-          <img v-if='scope.row.pic' style="height: 80px" :src="scope.row.pic">
-          <span v-else>暂无图片</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="位置" align="center">
-        <template slot-scope="scope">{{typeEnum[scope.row.type-1]}}</template>
-      </el-table-column>
-      <el-table-column label="链接地址" align="center">
-        <template slot-scope="scope">{{typeEnum[scope.row.type-1]}}</template>
-      </el-table-column>
-      <el-table-column label="创建时间" align="center">
-        <template slot-scope="scope">{{scope.row.createTime || '-'}}</template>
-      </el-table-column>
-      <el-table-column label="状态" width="70" align="center">
-        <template slot-scope="scope">
-          {{scope.row.status}}
+          {{ scope.row.status }}
         </template>
       </el-table-column>
       <el-table-column label="操作" width="90" align="center">
@@ -74,18 +71,15 @@
     </el-table>
 
     <div class="pagination-container">
-      <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" layout="total, sizes,prev, pager, next,jumper" :page-size="listQuery.pageSize" :page-sizes="[5,10,15]" :current-page.sync="listQuery.pageNum" :total="total">
+      <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
+        layout="total, sizes,prev, pager, next,jumper" :page-size="listQuery.pageSize" :page-sizes="[5, 10, 15]"
+        :current-page.sync="listQuery.pageNum" :total="total">
       </el-pagination>
     </div>
-
   </div>
 </template>
 <script>
-import {
-  fetchList,
-  updateStatus,
-  deleteHomeAdvertise,
-} from "@/api/homeAdvertise";
+import { fetchList, updateStatus, deleteHomeAdvertise } from "@/api/homeAdvertise";
 import { formatDate } from "@/utils/date";
 const defaultListQuery = {
   pageNum: 1,
@@ -103,7 +97,40 @@ export default {
       total: null,
       listLoading: false,
 
-      multipleSelection: [],// 当前选择的列表
+      multipleSelection: [], // 当前选择的列表
+      activeName: "all",
+      statusOptions: [
+        {
+          label: "全部",
+          value: null,
+          name: "all",
+        },
+        {
+          label: "待付款",
+          value: 0,
+          name: "wait_pay",
+        },
+        {
+          label: "待审核",
+          value: 1,
+          name: "wait_sent",
+        },
+        {
+          label: "待收货",
+          value: 3,
+          name: "wait_get",
+        },
+        {
+          label: "已取消 ",
+          value: 4,
+          name: "already_cancel",
+        },
+        {
+          label: "已完成",
+          value: 5,
+          name: "already_completed",
+        },
+      ],
     };
   },
   created() {
@@ -124,9 +151,12 @@ export default {
     },
   },
   methods: {
-    // 左侧分类点击
-    handleNodeClick(data) {
-      console.log(data);
+    // 根据状态查询
+    selectStatus() {
+      this.listQuery["status"] = this.statusOptions.find(
+        (i) => i.name == this.activeName
+      ).value;
+      this.getList();
     },
     // 重置
     handleResetSearch() {
@@ -143,35 +173,13 @@ export default {
       this.listQuery.pageSize = val;
       this.getList();
     },
-    // 切换分页 
+    // 切换分页
     handleCurrentChange(val) {
       this.listQuery.pageNum = val;
       this.getList();
     },
-    // 修改广告状态 
-    handleUpdateStatus(index, row) {
-      this.$confirm("是否要修改上线/下线状态?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      })
-        .then(() => {
-          updateStatus(row.id, { status: row.status }).then((response) => {
-            this.getList();
-            this.$message({
-              type: "success",
-              message: "修改成功!",
-            });
-          });
-        })
-        .catch(() => {
-          this.$message({
-            type: "success",
-            message: "已取消操作!",
-          });
-          this.getList();
-        });
-    },
+    // 修改广告状态
+    handleUpdateStatus(index, row) { },
     // 删除广告
     handleDelete(index, row) {
       this.deleteHomeAdvertise(row.id);
@@ -216,35 +224,6 @@ export default {
         });
       });
     },
-    // 选择列表
-    handleSelectionChange() {
-      this.multipleSelection = val;
-    },
-    // 批量删除
-    batchHandleProduct() {
-      let ids = [];
-      console.log('multipleSelection', this.multipleSelection)
-      // 处理选中的商品id
-      this.multipleSelection && this.multipleSelection.map(item => {
-        ids.push(item.id)
-      })
-      if (this.multipleSelection.length < 1) {
-        this.$message({
-          message: "请选选中商品后再进行批量操作！",
-          type: "error",
-          duration: 1000,
-        })
-        return
-      }
-      this.$confirm("是否要进行批量操作?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      }).then(() => {
-
-
-      });
-    }
   },
 };
 </script>
@@ -266,5 +245,3 @@ export default {
   width: 203px;
 }
 </style>
-
-

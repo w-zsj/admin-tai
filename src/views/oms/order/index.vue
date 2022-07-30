@@ -76,9 +76,7 @@
             <div class="deliverySn">实付: {{scope.row.payAmount}}</div>
             <div class="deliverySn">订单:
               {{scope.row.useIntegration ? `${scope.row.useIntegration}积分+` : ''}}￥{{scope.row.totalAmount}}</div>
-            <div class="deliverySn" v-if="scope.row.discountAmount">改价：-{{scope.row.discountAmount}}</div>
             <div class="deliverySn">运费: {{scope.row.freightAmount}} </div>
-            <div v-if="scope.row.promotionAmount">优惠: -{{scope.row.promotionAmount}}</div>
           </template>
         </GridColumn>
 
@@ -88,19 +86,12 @@
               <el-button size="mini" @click="handleViewOrder(scope.$index, scope.row)">查看订单</el-button>
             </p>
             <p>
-              <el-button size="mini" @click="handleDeliveryOrder(scope.$index, scope.row)"
-                v-show="scope.row.canDelivery">订单发货</el-button>
+              <el-button size="mini" @click="handleViewOrder(scope.$index, scope.row)">审核订单</el-button>
             </p>
             <!-- <p>
-              <el-button size="mini" @click="handleDeliveryOrder(scope.$index, scope.row)" v-show="scope.row.status === 2">修改物流</el-button>
-            </p>
-            <p>
-              <el-button size="mini" @click="handleViewLogistics(scope.$index, scope.row)" v-show="scope.row.status === 2 || scope.row.status === 3">订单跟踪</el-button>
+              <el-button size="mini" @click="handleDeliveryOrder(scope.$index, scope.row)"
+                v-show="scope.row.canDelivery">订单发货</el-button>
             </p> -->
-            <p>
-              <el-button size="mini" type="danger" @click="handleDeleteOrder(scope.$index, scope.row)"
-                v-show="scope.row.status === 0">修改价格</el-button>
-            </p>
           </template>
         </GridColumn>
         <template slot="group" slot-scope="scope">
@@ -130,7 +121,7 @@
       </span>
     </el-dialog>
 
-    <el-dialog title="修改价格" width="80%" :visible.sync="priceDialog">
+    <!-- <el-dialog title="修改价格" width="80%" :visible.sync="priceDialog">
       <el-table :data="gridData" class="tabmodal">
         <el-table-column property="productPic" label="商品信息" :width="320">
           <template slot-scope="scope" v-if="scope.$index == 0">
@@ -172,7 +163,7 @@
         <el-button @click="CancelDitPrice">取 消</el-button>
         <el-button type="primary" @click="confDitPrice">确 定</el-button>
       </span>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 <script>
@@ -359,17 +350,6 @@ export default {
     handleViewLogistics(index, row) {
       this.logisticsDialogVisible = true;
       this.currentOrderSn = row.orderSn;
-    },
-    handleDeleteOrder(index, row) {
-      this.priceDialog = true;
-      let omsOrderItemDtoList = row.omsOrderItemDtoList.map((i) => {
-        i.payAmount = row.payAmount;
-        i.id = row.id;
-        return i;
-      });
-      this.payAmount = row.payAmount;
-      this.currentOrderSn = row.orderSn;
-      this.gridData = omsOrderItemDtoList;
     },
     CancelDitPrice() {
       this.priceDialog = false;

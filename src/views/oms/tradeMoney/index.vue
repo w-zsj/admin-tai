@@ -16,34 +16,37 @@
       </el-row>
     </div>
     <div class="table-container">
-      <el-table ref="wineKnowledgeTable" :data="list" style="width: 100%;" v-loading="listLoading" border>
-        <el-table-column label="标题" align="center">
-          <template slot-scope="scope">{{scope.row.title}}</template>
+      <el-tabs v-model="activeName" type="card" @tab-click="selectStatus">
+        <el-tab-pane v-for="(item, index) in statusOptions" :key="index" :label="item.label" :name="item.name">
+        </el-tab-pane>
+      </el-tabs>
+      <el-table ref="wineKnowledgeTable" :data="list" style="width: 100%" v-loading="listLoading" border>
+        <el-table-column label="序号" align="center">
+          <template slot-scope="scope">{{ scope.row.title }}</template>
         </el-table-column>
-        <el-table-column label="图片" width='280' align="center">
-          <template slot-scope="scope">
-            <el-image style=" height: 80px;" :src="scope.row.pic" :preview-src-list="[scope.row.pic]" />
-          </template>
+        <el-table-column label="订单ID" width="280" align="center">
+          <template slot-scope="scope">{{ scope.row.orderNo }}</template>
         </el-table-column>
-        <el-table-column label="发布时间" align="center">
-          <template slot-scope="scope">{{scope.row.publishedTime | formatTime}}</template>
+        <el-table-column label="成交额(元)" align="center">
+          <template slot-scope="scope">{{ scope.row.publishedTime }}</template>
         </el-table-column>
-        <el-table-column label="文章类型" align="center">
-          <template slot-scope="scope">{{typeEnum[scope.row.type-1]}}</template>
+        <el-table-column label="成交时间" align="center">
+          <template slot-scope="scope">{{
+            scope.row.publishedTime | formatTime
+          }}</template>
         </el-table-column>
-        <el-table-column label="操作" align="center">
-          <template slot-scope="scope">
-            <el-button size="mini" type="text" @click="handleUpdate(scope.$index, scope.row)">查看</el-button>
-          </template>
+        <el-table-column label="状态" align="center">
+          <template slot-scope="scope">{{ scope.row.publishedTime }}</template>
         </el-table-column>
       </el-table>
     </div>
     <div class="pagination-container">
-      <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" layout="total, sizes,prev, pager, next,jumper" :page-size="listQuery.pageSize" :page-sizes="[5,10,15]" :current-page.sync="listQuery.pageNum" :total="total">
+      <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
+        layout="total, sizes,prev, pager, next,jumper" :page-size="listQuery.pageSize" :page-sizes="[5, 10, 15]"
+        :current-page.sync="listQuery.pageNum" :total="total">
       </el-pagination>
     </div>
   </div>
-
 </template>
 <script>
 const defaultListQuery = {
@@ -54,25 +57,23 @@ const defaultListQuery = {
 };
 const recordList = [
   {
-    svg_icon: 't_user_icon',
+    svg_icon: "t_user_icon",
     count: "1",
     unit: "",
     class: "user",
-    desc: "订单金额",
-    bg: '#5CE3D5'
+    desc: "总成交金额(元)",
+    bg: "#5CE3D5",
   },
   {
-    svg_icon: 't_distribution_icon',
+    svg_icon: "t_distribution_icon",
     count: "33",
     unit: "",
     class: "distribution",
-    desc: "交易订单",
-    bg: '##EE592C'
+    desc: "当天成交额(元)",
+    bg: "##EE592C",
   },
-
-]
+];
 export default {
-
   data() {
     return {
       recordList,
@@ -80,16 +81,38 @@ export default {
       list: null,
       total: null,
       listLoading: false,
-    }
+      activeName: "all",
+      statusOptions: [
+        {
+          label: "全部",
+          value: null,
+          name: "all",
+        },
+        {
+          label: "当天订单",
+          value: 0,
+          name: "wait_pay",
+        },
+        {
+          label: "当月订单",
+          value: 1,
+          name: "wait_sent",
+        },
+      ],
+    };
   },
   mounted() {
-    this.getChartList()
+    this.getList();
   },
   methods: {
-    getChartList() {
-
-
+    // 根据状态查询
+    selectStatus() {
+      this.listQuery["status"] = this.statusOptions.find(
+        (i) => i.name == this.activeName
+      ).value;
+      this.getList();
     },
+    getList() { },
     handleSizeChange(val) {
       this.listQuery.pageNum = 1;
       this.listQuery.pageSize = val;
@@ -99,9 +122,8 @@ export default {
       this.listQuery.pageNum = val;
       this.getList();
     },
-
-  }
-}
+  },
+};
 </script>
 <style lang="scss" scoped>
 .wrap {
@@ -141,5 +163,8 @@ export default {
   .mb {
     margin-bottom: 20px;
   }
+  // /deep/ .el-tabs__header {
+  //   margin-bottom: 0;
+  // }
 }
 </style>

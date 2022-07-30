@@ -11,31 +11,30 @@
         <el-input v-model="homeAdvertise.name" class="input-width"></el-input>
       </el-form-item>
       <el-form-item label="广告图片：" prop="uploadPic">
-        <multiUpload v-model="homeAdvertise.uploadPic" :maxCount='1' :picWidth="picWidth" :picHeight='picHeight' acceptType='.png,.gif' :tipText='`请上传2M以内的png/gif图片，尺寸${typeSizeEnum[homeAdvertise.type-1]}`' />
+        <multiUpload v-model="homeAdvertise.uploadPic" :maxCount='1' :picWidth="picWidth" :picHeight='picHeight'
+          acceptType='.png,.gif' :tipText='`请上传2M以内的png/gif图片，尺寸${typeSizeEnum[homeAdvertise.type-1]}`' />
       </el-form-item>
       <el-form-item label="上线时间：" prop="startTime">
-        <el-date-picker type="datetime" placeholder="选择日期" value-format="yyyy-MM-dd HH:mm:ss" v-model="homeAdvertise.startTime"></el-date-picker>
+        <el-date-picker type="datetime" placeholder="选择日期" value-format="yyyy-MM-dd HH:mm:ss"
+          v-model="homeAdvertise.startTime"></el-date-picker>
       </el-form-item>
       <el-form-item label="下线时间：">
-        <el-date-picker type="datetime" placeholder="选择日期" value-format="yyyy-MM-dd HH:mm:ss" v-model="homeAdvertise.endTime"></el-date-picker>
+        <el-date-picker type="datetime" placeholder="选择日期" value-format="yyyy-MM-dd HH:mm:ss"
+          v-model="homeAdvertise.endTime"></el-date-picker>
       </el-form-item>
       <el-form-item label="跳转目标：" required prop="urlType">
         <el-radio-group v-model="homeAdvertise.urlType" @change='handleUrlTypeChange'>
-          <el-radio :label="1">商品详情</el-radio>
           <el-radio :label="2">URL</el-radio>
           <el-radio :label="3">纯图片</el-radio>
           <el-radio :label="4">页面路径</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item v-if='homeAdvertise.urlType === 1' label="商品ID：" prop="productId">
-        <el-input v-model="homeAdvertise.productId" class='input-width' placeholder="请输入商品ID"></el-input>
-        <div class='tip'>商品ID为商品列表中的编号</div>
-      </el-form-item>
       <el-form-item v-if='homeAdvertise.urlType === 2' label="URL链接：" prop="adUrl">
         <el-input v-model="homeAdvertise.adUrl" class="input-width" placeholder="请输入广告链接"></el-input>
       </el-form-item>
       <el-form-item v-if='homeAdvertise.urlType === 3' label="纯图片：" prop="adPic">
-        <multiUpload v-model="homeAdvertise.adPic" :maxCount='1' :picWidth="180" :picHeight='200' tipText='请上传2M以内的png/jpg/gif图片' acceptType='.png,.gif,.jpg' />
+        <multiUpload v-model="homeAdvertise.adPic" :maxCount='1' :picWidth="180" :picHeight='200'
+          tipText='请上传2M以内的png/jpg/gif图片' acceptType='.png,.gif,.jpg' />
       </el-form-item>
       <el-form-item v-if='homeAdvertise.urlType === 4' label="页面路径：" prop="pageUrl">
         <el-select v-model="homeAdvertise.pageUrl" placeholder="请选择">

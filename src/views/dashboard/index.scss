@@ -1,117 +1,130 @@
 .app-container {
-  font-size: 14px;
+  // min-width: 900px;
+  // margin-top: 40px;
+  // margin-left: 120px;
+  // margin-right: 120px;
+  // margin-top:120px;
+}
+
+.dataUpdateTime {
   color: #606266;
+}
 
-  /deep/ .el-card__body {
-    padding: 0;
-  }
+.total-layout {
+  margin-top: 20px;
+}
 
-  .grid-content {
-    height: 100px;
-    border: 1px solid #ccc;
+.total-value-old {
+  margin-top: 30px;
+}
 
-    .t_user_icon {
-      font-size: 32px;
-    }
+.total-frame {
+  border: 1px solid #dcdfe6;
+  padding: 20px 15px;
+  height: 168px;
+}
 
-    .icon {
-      width: 30%;
-      height: 100%;
-      background: #EA8F62;
-    }
+.total-icon {
+  color: #409eff;
+  width: 60px;
+  height: 60px;
+  position: absolute;
+  top: 20px;
+}
 
-    .count {
-      width: 70%;
-      height: 100%;
-      justify-content: center;
-      align-items: center;
-      font-size: 18px;
-      font-weight: bold;
+.total-title {
+  font-size: 16px;
+  color: #909399;
+  padding-left: 70px;
+  margin-bottom: 15px;
+}
 
-      .txt {
-        font-size: 12px;
-        font-weight: normal;
-        padding-top: 10px;
-      }
-    }
-  }
+.total-value {
+  padding-top: 15px;
+  padding-left: 70px;
+  font-size: 16px;
+  color: #606266;
+  margin-bottom: 5px;
+  word-break: break-all;
+}
 
-  .mb {
-    margin-bottom: 20px;
-  }
+.un-handle-layout {
+  /* margin-top: 20px; */
+  margin-bottom: 20px;
+  border: 1px solid #dcdfe6;
+}
 
-  .header {
-    color: #606266;
+.layout-title {
+  color: #606266;
+  padding: 15px 20px;
+  background: #f2f6fc;
+  font-weight: bold;
+}
 
-    background: #f2f6fc;
-    font-weight: bold;
-    padding: 15px 20px;
-  }
+.un-handle-content {
+  padding: 20px 15px;
+}
 
-  .statistics {
+.un-handle-item {
+  border-bottom: 1px solid #ebeef5;
+  padding: 10px 0;
+  font-size: 14px;
+  display: flex;
+  flex-wrap: wrap;
+}
 
+.un-handle-item span:nth-child(2) {
+  max-width: 100%;
+  margin-left: auto;
+  overflow-wrap: break-word;
+}
 
-    font-size: 14px;
+.overview-layout {
+  margin-top: 20px;
+}
 
-    .item {
-      height: 40px;
-      padding: 0 40px;
-      border-bottom: 1px solid #dcdfe6;
+.overview-item-value {
+  font-size: 24px;
+  text-align: center;
+}
 
-      &:last-child {
-        border-bottom: 0;
-      }
+.overview-item-title {
+  margin-top: 10px;
+  text-align: center;
+}
 
-      span {
-        &:first-child {
-          margin-right: 20px;
-        }
+.out-border {
+  border: 1px solid #dcdfe6;
+}
 
-        &.yell {
-          font-size: 12px;
-          color: #EA8F62;
-        }
-      }
+.statistics-layout {
+  margin-top: 20px;
+  border: 1px solid #dcdfe6;
+}
 
-    }
-  }
+.mine-layout {
+  position: absolute;
+  right: 140px;
+  top: 107px;
+  width: 250px;
+  height: 235px;
+}
 
-  .buy-progress {
-    .header {
-      margin-bottom: 20px;
-    }
+.address-content {
+  padding: 20px;
+  font-size: 18px;
+}
 
-    .list {
-      padding: 0 20px;
+.grow {
+  color: #67c23a;
+  font-size: 16px;
+}
 
-      .item {
-        margin-right: 20px;
-      }
-    }
+.down {
+  color: #f56c6c;
+  font-size: 16px;
+}
 
-    .tit {
-      width: 100px;
-      height: 40px;
-    }
-  }
-
-  .enter {
-    margin: 20px;
-
-    .list {
-      width: 100px;
-      padding: 10px 0;
-      // height: 50px;
-      border-radius: 4px;
-      margin-right: 20px;
-      color: #fff;
-      justify-content: center;
-      align-items: center;
-
-      .title {
-        font-size: 12px;
-        padding-top: 10px;
-      }
-    }
-  }
+.el-date-editor .el-range-separator {
+  padding: 0 20px;
 }

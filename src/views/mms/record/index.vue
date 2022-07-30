@@ -1,80 +1,98 @@
-<template> 
+<template>
+   
   <div class="app-container">
     <el-card class="filter-container" shadow="never">
       <div style="margin-top: 15px">
         <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
-          <el-form-item label="会员名称：">
-            <el-input v-model="listQuery.title" class="input-width" placeholder="标题"></el-input>
+          <el-form-item label="用户手机号：">
+            <el-input v-model="listQuery.phone" class="input-width" placeholder="用户手机号" clearable></el-input>
           </el-form-item>
-          <el-form-item>
-            <el-button style="float:right" type="primary" @click="handleSearchList()" size="small"> 查询搜索</el-button>
-            <el-button style="float:right;margin-right: 15px" @click="handleResetSearch()" size="small"> 重置</el-button>
+          <el-form-item label="编号：">
+            <el-button style="float: right" type="primary" @click="handleSearchList()" size="small">
+              查询搜索</el-button>
+            <el-button style="float: right; margin-right: 15px" @click="handleResetSearch()" size="small">
+              重置</el-button>
           </el-form-item>
         </el-form>
       </div>
     </el-card>
-
     <div class="table-container">
-      <el-table ref="wineKnowledgeTable" :data="list" style="width: 100%;" v-loading="listLoading" border>
-        <el-table-column label="标题" align="center">
-          <template slot-scope="scope">{{scope.row.title}}</template>
+      <el-table ref="wineKnowledgeTable" :data="list" style="width: 100%" :maxHeight="tableHeight"
+        v-loading="listLoading" border>
+        <el-table-column label="编号" align="center">
+          <template slot-scope="scope">{{ scope.row.id }}</template>
         </el-table-column>
-        <el-table-column label="图片" width='280' align="center">
+        <el-table-column label="用户手机号" align="center">
+          <template slot-scope="scope">{{ scope.row.phone }}</template>
+        </el-table-column>
+        <el-table-column label="用户昵称" align="center">
+          <template slot-scope="scope">{{ scope.row.nickname }}</template>
+        </el-table-column>
+        <el-table-column label="注册时间" align="center">
+          <template slot-scope="scope">{{ scope.row.createTime }}</template>
+        </el-table-column>
+        <el-table-column label="余额" align="center">
+          <template slot-scope="scope">{{ scope.row.coin }}</template>
+        </el-table-column>
+        <el-table-column label="会员卡状态" align="center">
+          <template slot-scope="scope">{{
+            vipStatusOptions[scope.row.cardStatus - 1]
+          }}</template>
+        </el-table-column>
+        <!-- <el-table-column label="操作" width="90" align="center">
           <template slot-scope="scope">
-            <el-image style=" height: 80px;" :src="scope.row.pic" :preview-src-list="[scope.row.pic]" />
+            <el-button size="mini" type="text" @click="handleUpdateStatus(scope.$index, scope.row)">禁用
+            </el-button>
+            <el-button size="mini" type="text" @click="handleUpdate(scope.$index, scope.row)">启用
+            </el-button>
           </template>
-        </el-table-column>
-        <el-table-column label="发布时间" align="center">
-          <template slot-scope="scope">{{scope.row.publishedTime | formatTime}}</template>
-        </el-table-column>
-        <el-table-column label="文章类型" align="center">
-          <template slot-scope="scope">{{typeEnum[scope.row.type-1]}}</template>
-        </el-table-column>
-        <el-table-column label="操作" align="center">
-          <template slot-scope="scope">
-            <el-button size="mini" type="text" @click="handleUpdate(scope.$index, scope.row)">查看</el-button>
-          </template>
-        </el-table-column>
+        </el-table-column> -->
       </el-table>
     </div>
     <div class="pagination-container">
       <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
-        layout="total, sizes,prev, pager, next,jumper" :page-size="listQuery.pageSize" :page-sizes="[5,10,15]"
+        layout="total, sizes,prev, pager, next,jumper" :page-size="listQuery.pageSize" :page-sizes="[5, 10, 15]"
         :current-page.sync="listQuery.pageNum" :total="total">
       </el-pagination>
     </div>
   </div>
 </template>
 <script>
+import { fetchList } from "@/api/vipCode";
 const defaultListQuery = {
   pageNum: 1,
   pageSize: 10,
-  title: null,
-  publishedTime: null,
+  cardStatus: null,
+  memberId: null,
+  nickName: null,
+  phone: null,
+  memberLevelId: null,
 };
+let self;
 export default {
-  name: "knowledge",
+  name: "vip",
   data() {
     return {
+      tableHeight: 0, // 表格高度
       listQuery: Object.assign({}, defaultListQuery),
       list: null,
       total: null,
       listLoading: false,
       operateType: null,
-      typeEnum: ['h5链接', '图片'],
+      vipStatusOptions: ["禁用", "启用"],
     };
+  },
+  beforeCreate() {
+    self = this;
   },
   created() {
     this.getList();
   },
-  mounted() { },
-  filters: {
-    formatTime(time) {
-      if (time == null || time === "") {
-        return "N/A";
-      }
-      return formatDate(time, "yyyy-MM-dd hh:mm:ss");
-    },
+  mounted() {
+    this.$nextTick(() => {
+      const h = document.body.clientHeight;
+      this.tableHeight = h - 300;
+    });
   },
   methods: {
     handleResetSearch() {
@@ -93,31 +111,23 @@ export default {
       this.listQuery.pageNum = val;
       this.getList();
     },
-    //   查看
-    handleUpdate(index, row) {
-
-    },
     getList() {
       this.listLoading = true;
-      //   fetchList(this.listQuery).then((response) => {
-      //     this.listLoading = false;
-      //     this.list = response.data.list;
-      //     this.total = response.data.total;
-      //   });
+      fetchList(this.listQuery).then((response) => {
+        this.listLoading = false;
+        this.list = response.data.list;
+        this.total = response.data.total;
+      });
     },
   },
 };
 </script>
 <style lang="scss" scoped>
 .app-container {
-  height: calc(100vh - 120px);
+  height: calc(100vh - 50px);
+  overflow: auto;
 }
 .input-width {
   width: 203px;
 }
-/deep/ .el-image img {
-  width: auto;
-}
 </style>
-
-

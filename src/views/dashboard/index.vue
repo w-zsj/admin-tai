@@ -1,104 +1,128 @@
 <template>
   <div class="app-container">
-    <!-- 商城用户数 -->
-    <div class="mb">
+    <div class="dataUpdateTime">{{dataUpdateTime}} 更新</div>
+    <div class="overview-layout">
       <el-row :gutter="20">
-        <el-col :span="6" v-for="(item, idx) in recordList" :key="idx">
-          <div class="grid-content flex-aic">
-            <div class="icon flex-ctr" :class="item.class" :style="{ background: item.bg }">
-              <svg-icon :icon-class="item.svg_icon" class="t_user_icon"></svg-icon>
-            </div>
-            <div class="count flex-col">
-              <div>{{ idx ==recordList.length-1?item.unit:'' }}{{ item.count }}</div>
-              <div class="txt">{{ item.desc }}</div>
-            </div>
-          </div>
+        <!-- 用户指标 -->
+        <!-- <el-col :span="12">
+          <unit :source="3" :userInfo="userInfo"></unit>
+        </el-col> -->
+        <!-- 会员人数 -->
+        <!-- <el-col :span="12">
+          <unit :source="4" :vipInfo="vipInfo"></unit>
+        </el-col> -->
+        <!-- 待处理订单 -->
+        <el-col :span="12">
+          <unit :source="1" :waitingPayOrderCount="waitingPayOrderCount"></unit>
+        </el-col>
+        <!-- 商品数据 -->
+        <el-col :span="12">
+          <unit :source="2" :productInfo="productInfo" :lowStockNumber="lowStockNumber"></unit>
         </el-col>
       </el-row>
     </div>
-    <!-- 统计信息 -->
-    <div class="mb statistics">
-      <el-row :gutter="20">
-        <el-col :span="6" v-for="(item, idx) in statistics" :key="idx">
-          <el-card shadow="never">
-            <div class="header">{{item.title}}</div>
-            <div class="item flex-aic" v-for="(sub,subIdx) in item.list" :key='subIdx'>
-              <span>未处理订单:</span>
-              <span class="yell">10</span>&nbsp;&nbsp;个
-            </div>
-          </el-card>
+    <!-- <div class="statistics-layout">
+      <div class="layout-title">订单统计</div>
+      <el-row>
+        <el-col :span="4">
+          <unit :source="5" :orderInfo="orderInfo"></unit>
+        </el-col>
+        <el-col :span="20">
+          <echarts></echarts>
         </el-col>
       </el-row>
-    </div>
-    <!-- 购物产品比例 -->
-    <div class="mb buy-progress">
-      <el-card shadow="never">
-        <div class="header">购物产品比例</div>
-        <div class="list flex-aic">
-          <div class="item">
-            <el-progress type="circle" :percentage="25" :stroke-width='10' :width='100' :color='randomRgb()'>
-            </el-progress>
-            <div class="tit flex-ctr">蔬菜</div>
-          </div>
-          <div class="item">
-            <el-progress type="circle" :percentage="25" :stroke-width='10' :width='100' :color='randomRgb()'>
-            </el-progress>
-            <div class="tit flex-ctr">蔬菜</div>
-          </div>
-        </div>
-
-        <div class="enter flex-aic">
-          <div class="flex-col list" :style="{ background: randomRgb() }" v-for="(item,idx) in otherMenuEnter" :key="idx">
-            <div class="icon">
-              <svg-icon :icon-class="item.icon" class="t_user_icon"></svg-icon>
-            </div>
-            <div class="title">{{item.title}}</div>
-          </div>
-        </div>
-      </el-card>
-
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
-import { addHomeAdminDataLog, getHomeCountInfo, queryOrderStatisticsList } from "@/api/home"
-import { recordList, statistics, otherMenuEnter } from "./config";
-var reg = /(\d)(?=(?:\d{3})+$)/g; // 千位分割
+import { homeApi } from '@/api/home.js'
+import echarts from './comps/echarts.vue'
+import unit from './comps/unit'
 export default {
-  name: "Dashboard",
+  name: 'Dashboard',
+  components: { echarts, unit },
   data() {
     return {
-      recordList,
-      statistics,
-      otherMenuEnter
-    };
+      dataUpdateTime: "",// 更新日期
+      userInfo: [],// 用户相关数据
+      vipInfo: [],// vip 相关数据
+      orderInfo: [],// 订单相关数据
+      productInfo: [],// 商品相关数据
+      waitingPayOrderCount: [],// 代付款订单。。。
+      lowStockNumber: null,// 最下库存数
+    }
   },
-  mounted() {
-    this.addHomeAdminDataLog()
+  created() {
+    this.getInfo()
   },
   methods: {
-    // 添加首页管理员数据操作记录
-    addHomeAdminDataLog() {
-      // dataType	数据类型: 1->新注册用户数；2->会员充值数；3->订单数 4->订单销售额；5->订单销售瓶数	
-      addHomeAdminDataLog({ dataType: 1 }).then(res => {
+    getInfo() {
+      homeApi().then(res => {
+        if (res.code == 1) {
+          let info = res.data
+          Object.assign(this, {
+            dataUpdateTime: info.dataUpdateTime,
+            lowStockNumber: info.lowStockNumber,
+            userInfo: [
+              {
+                key: "openCount",
+                item: info.openCount
+              },
+              {
+                key: "loginCount",
+                item: info.loginCount
+              },
+              {
+                key: "registerCount",
+                item: info.registerCount
+              }
+            ],
+            vipInfo: [
+              {
+                key: "",
+                item: [
+                  { type: 1 }, { type: 3 }, { type: 4 }, { type: 5 }, { type: 6 }
+                ]
+              },
+              {
+                key: 'vipFirstFeeCount',
+                item: info.vipFirstFeeCount
+              },
+              {
+                key: "vipContinueFeeCount",
+                item: info.vipContinueFeeCount
+              },
+              {
+                key: 'vvipExchangeCount',
+                item: info.vvipExchangeCount
+              }
+            ],
+            productInfo: info.productCount,
+            waitingPayOrderCount: info.waitingHandleOrderCount,
+            orderInfo: [
+              {
+                key: 'orderCount',
+                item: info.orderCount
+              },
+              {
+                key: 'orderMoneyCount',
+                item: info.orderMoneyCount
+              },
+              {
+                key: 'orderNumberCount',
+                item: info.orderNumberCount
+              }
+            ],
+          })
+
+        }
 
       })
-    },
-    getHomeCountInfo() {
-      getHomeCountInfo().then(res => {
-
-      })
-    },
-    randomRgb() {
-      let R = Math.floor(Math.random() * 255);
-      let G = Math.floor(Math.random() * 255);
-      let B = Math.floor(Math.random() * 255);
-      return "rgb(" + R + "," + G + "," + B + ")";
     }
+  }
+}
 
-  },
-};
 </script>
 
 <style src="./index.scss" lang="scss" scoped></style>
