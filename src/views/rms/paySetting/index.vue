@@ -2,7 +2,7 @@
    
   <div class="app-container">
     <!-- 支付配置 -->
-    <el-table ref="wineKnowledgeTable" :data="list" style="width: 100%" border>
+    <!-- <el-table ref="wineKnowledgeTable" :data="list" style="width: 100%" border>
       <el-table-column label="支付名称" align="center">
         <template slot-scope="scope">{{ scope.row.paytype }}</template>
       </el-table-column>
@@ -16,12 +16,12 @@
       <el-table-column label="描述" align="center">
         <template slot-scope="scope">{{ scope.row.desc }}</template>
       </el-table-column>
-      <!-- <el-table-column label="操作" align="center">
+      <el-table-column label="操作" align="center">
         <template slot-scope="scope">
           <el-button size="mini" type="text">查看</el-button>
         </template>
-      </el-table-column> -->
-    </el-table>
+      </el-table-column>
+    </el-table> -->
     <!-- 上传 支付二维码 -->
     <div class="code">
       <el-card shadow="never">

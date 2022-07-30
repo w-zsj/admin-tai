@@ -53,7 +53,7 @@
         </el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
-            <el-button v-if="scope.row.status==0" size="mini" type="text" @click="dialogVisible=true">审核</el-button>
+            <el-button v-if="scope.row.status==0" size="mini" type="text" @click="audit(scope.row.id)">审核</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -101,7 +101,8 @@ export default {
       listLoading: false,
       dialogVisible: false,
       status: "",
-      note: ''
+      note: '',
+      id: ''
     };
   },
   created() {
@@ -141,8 +142,14 @@ export default {
         this.total = response.data.total;
       });
     },
+    // 审核
+    audit(id) {
+      this.dialogVisible = true;
+      this.id = id;
+    },
     handleCloseOrderConfirm() {
-      if (this.status) coinOperate({ status: this.status, note: this.note })
+      let { status, id, note } = this;
+      if (status) coinOperate({ status, note, id })
         .then(res => {
           if (res.code == 1) {
             this.dialogVisible = false;

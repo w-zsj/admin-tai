@@ -84,6 +84,13 @@ export function getDeliveryDetail(data) {
     data: data
   })
 }
+export function orderApprove(data) {
+  return request({
+    url: '/order/approve',
+    method: 'post',
+    data: data
+  })
+}
 
 export function downloadOrderSnDetail(data) {
   return request({
